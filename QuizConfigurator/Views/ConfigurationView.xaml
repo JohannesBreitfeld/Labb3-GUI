@@ -7,6 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="800" d:Background="white"
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp">
+ 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -26,8 +27,11 @@
                         Orientation="Horizontal"
                         Margin="5">
                 <Button Margin="0 0 5 0" Content="{fa:Icon Bars}" Width="20"/>
+
                 <Button Content="{fa:Icon Plus}" Width="20"/>
+
                 <Button Content="{fa:Icon Minus}" Margin="5 0 0 0" Width="20"/>
+
             </StackPanel>
         </Grid>
 

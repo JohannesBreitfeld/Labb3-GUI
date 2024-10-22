@@ -5,8 +5,71 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:QuizConfigurator.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800" d:Background="White">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" MinWidth="40"/>
+            <ColumnDefinition Width="560"/>
+            <ColumnDefinition Width="*" MinWidth="40"/>
+
+        </Grid.ColumnDefinitions>
+
+        <Label Content="49" 
+               FontSize="28" 
+               FontWeight="Bold"
+               HorizontalAlignment="Right" 
+               VerticalAlignment="Top"
+               Margin="5"
+               Grid.Column="2"/>
+
+        <StackPanel VerticalAlignment="Center" 
+                    Grid.Column="1" 
+                    HorizontalAlignment="Center">
+            <TextBlock TextWrapping="WrapWithOverflow" 
+                       Text="This is where the questions will go when the game is played" 
+                       FontSize="28"
+                       TextAlignment="Center"/>
+            <Label Content="Question 2 of 15" 
+                   HorizontalAlignment="Center" 
+                   FontSize="15"/>
+        </StackPanel>
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal" 
+                        VerticalAlignment="Bottom" 
+                        HorizontalAlignment="Center" 
+                        Margin="0 0 0 20">
+                <Button Content="Answer 1" 
+                        Width="220" 
+                        Height="80"
+                        Margin="0 0 20 0"/>
+                <Button Content="Answer 2" 
+                        Width="220" 
+                        Height="80"/>
+            </StackPanel>
             
+            <StackPanel Grid.Row="1" 
+                        Orientation="Horizontal" 
+                        VerticalAlignment="Top" 
+                        HorizontalAlignment="Center">
+                <Button Content="Answer 3" 
+                        Width="220" 
+                        Height="80"
+                        Margin="0 0 20 0"/>
+                <Button Content="Answer 4" 
+                        Width="220" 
+                        Height="80"/>
+            </StackPanel>
+
+        </Grid>
+        
     </Grid>
 </UserControl>

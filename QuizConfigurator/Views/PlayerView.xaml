@@ -33,9 +33,18 @@
                        Text="This is where the questions will go when the game is played" 
                        FontSize="28"
                        TextAlignment="Center"/>
-            <Label Content="Question 2 of 15" 
-                   HorizontalAlignment="Center" 
-                   FontSize="15"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                <Label Content="Question" 
+                        FontSize="15"/>
+                <Label Content="2" 
+                        FontSize="15"/>
+                <Label Content="of" 
+                        FontSize="15"/>
+                <Label Content="15" 
+                        FontSize="15"/>
+            </StackPanel>
+            
+            
         </StackPanel>
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.RowDefinitions>

@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace QuizConfigurator.Views
+namespace QuizConfigurator.View
 {
     /// <summary>
-    /// Interaction logic for PlayerView.xaml
+    /// Interaction logic for ResultView.xaml
     /// </summary>
-    public partial class PlayerView : UserControl
+    public partial class ResultView : UserControl
     {
-        public PlayerView()
+        public ResultView()
         {
             InitializeComponent();
         }

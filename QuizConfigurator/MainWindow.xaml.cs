@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using QuizConfigurator.Model;
+using QuizConfigurator.ViewModel;
+using System.Windows;
 
 namespace QuizConfigurator
 {
@@ -9,7 +11,8 @@ namespace QuizConfigurator
     {
         public MainWindow()
         {
-            InitializeComponent();    
+            InitializeComponent();
+            DataContext = new MainWindowViewModel();
         }
     }
 }

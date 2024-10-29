@@ -6,9 +6,10 @@
         xmlns:local="clr-namespace:QuizConfigurator" xmlns:view="clr-namespace:QuizConfigurator.View"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" MinHeight="450" MinWidth="700">
-    <!--<Window.InputBindings>
-        <KeyBinding Key="U" Modifiers="Alt" Command="{Binding delegate}"/>
-    </Window.InputBindings>-->
+    <Window.InputBindings>
+
+        
+    </Window.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

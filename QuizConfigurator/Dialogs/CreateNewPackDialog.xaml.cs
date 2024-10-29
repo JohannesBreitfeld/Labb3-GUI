@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using QuizConfigurator.Enums;
+using QuizConfigurator.Model;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace QuizConfigurator.Dialogs
 {
@@ -22,6 +12,18 @@ namespace QuizConfigurator.Dialogs
         public CreateNewPackDialog()
         {
             InitializeComponent();
+        }
+
+        private void Button_ClickCreate(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
+            this.Close();
+        }
+
+        private void Button_ClickCancel(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            this.Close();
         }
     }
 }

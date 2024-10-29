@@ -7,29 +7,64 @@
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+   <!--<Style x:Key="CommandMenuItemStyle"
+          TargetType="{x:Type MenuItem}"
+        PropertyName-->
+    
+    
     <Grid>
         <Menu>
             <MenuItem Header="_File">
-                <MenuItem Header="_New Question Pack" Icon="{fa:Icon FolderPLus}"/>
-                <MenuItem Header="_Select Question Pack" Icon="{fa:Icon FolderOpen}"/>
-                <MenuItem Header="_Delete Question Pack" Icon="{fa:Icon FolderMinus}"/>
-                
-                <Separator/>
-                <MenuItem Header="_Import Questions" Icon="{fa:Icon CloudArrowDown}"/>
-                
-                <Separator/>
-                <MenuItem Header="E_xit"/>
+                <MenuItem Header="_New Question Pack" 
+                          Icon="{fa:Icon FolderPLus}" 
+                          Command="{Binding OpenCreatePackCommand}"/>
+                <MenuItem Header="_Select Question Pack"
+                          Icon="{fa:Icon FolderOpen}">
+                    <MenuItem.ItemsSource>
+                        <Binding Path="Packs"/>
+                    </MenuItem.ItemsSource>
+                    <MenuItem.ItemContainerStyle>
+                        <Style TargetType="MenuItem">
+                            <Setter Property="Header" Value="{Binding Name}" />
+                            <Setter Property="Command" 
+                                    Value="{Binding DataContext.SetActivePackCommand, 
+                                    RelativeSource={RelativeSource AncestorType=Window}}" />
+                            <Setter Property="CommandParameter" Value="{Binding}" />
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
             </MenuItem>
-            <MenuItem Header="_Edit">
-                <MenuItem Header="_Add Question" Icon="{fa:Icon Plus}"/>
-                <MenuItem Header="_Remove Quiestion" Icon="{fa:Icon Minus}"/>
-                <MenuItem Header="Pack _Options" Icon="{fa:Icon Bars}"/>
+
+
+
+            <MenuItem Header="_Delete Question Pack" Icon="{fa:Icon FolderMinus}"
+                      Command="{Binding DeletePackCommand}"/>
+                
+                <Separator/>
+                <MenuItem Header="_Import Questions" Icon="{fa:Icon CloudArrowDown}" InputGestureText="Ctrl + I"/>
+                <Separator/>
+                <MenuItem Header="_Save" Icon="{fa:Icon FloppyDisk}" 
+                          InputGestureText="Ctrl + S" 
+                          
+                          Command="{Binding SaveCommand}"/>
+                <Separator/>
+                <MenuItem Header="E_xit" InputGestureText="Alt + F4"/>
+            </MenuItem>
+            <MenuItem Header="_Edit" DataContext="{Binding ConfigurationViewModel}">
+                <MenuItem Header="_Add Question" 
+                          Icon="{fa:Icon Plus}" 
+                          InputGestureText="Insert"
+                          Command="{Binding AddQuestionCommand}"/>
+                <MenuItem Header="_Remove Quiestion" 
+                          Icon="{fa:Icon Minus}" 
+                          InputGestureText="Delete"
+                          Command="{Binding DeleteQuestionCommand}"/>
+                <MenuItem Header="Pack _Options" Icon="{fa:Icon Bars}" InputGestureText="Ctrl + O"/>
             </MenuItem>
             <MenuItem Header="_View">
-                <MenuItem Header="_Play" Icon="{fa:Icon Play}"/>
-                <MenuItem Header="_Edit" Icon="{fa:Icon Gears}"/>
+                <MenuItem Header="_Play" Icon="{fa:Icon Play}" InputGestureText="Ctrl + P"/>
+                <MenuItem Header="_Edit" Icon="{fa:Icon Gears}" InputGestureText="Ctrl + E"/>
                 <Separator/>
-                <MenuItem Header="_Fullscreen" Icon="{fa:Icon Expand}"/>
+                <MenuItem Header="_Fullscreen" Icon="{fa:Icon Expand}" InputGestureText="Alt + Enter"/>
             </MenuItem>
         </Menu>
     </Grid>

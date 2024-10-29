@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace QuizConfigurator.Model
+﻿namespace QuizConfigurator.Model
 {
     class Question
     {
-        public Question(string query, string correctAnswer, 
+        public Question(string query, string correctAnswer,
             string incorrecerAnswer1, string incorrectAnswer2, string incorrectAnswer3)
         {
             Query = query;

@@ -7,30 +7,39 @@
         mc:Ignorable="d"
         Title="Pack Options" Height="240" Width="200"
         ResizeMode="NoResize">
+
+    <Window.DataContext>
+        <local:PackOptionsDialogService/>
+    </Window.DataContext>
+
     <Grid>
         <StackPanel Margin="0 5 0 0">
             <Label Content="Pack Name:"
                    FontWeight="Bold"/>
-            <TextBox Margin="5 0 5 0"/>
+            <TextBox Margin="5 0 5 0" Text="{Binding PackName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <Label Content="Difficulty:"
                    FontWeight="Bold"/>
-            <ComboBox Margin="5 0 5 0"/>
+            <ComboBox Margin="5 0 5 0"
+                      ItemsSource="{Binding Difficulties}"
+                      SelectedItem="{Binding SetDifficulty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <StackPanel Orientation="Horizontal">
                 <Label Content="Time Limit:" 
                        FontWeight="Bold"
                        Width="100"/>
-                <Label Content="150" Width="30" HorizontalAlignment="Left"/>
+                <Label Content="{Binding ElementName=TimeLimitSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" Width="30" HorizontalAlignment="Left"/>
                 <Label Content="Seconds"/>
             </StackPanel>
-            <Slider Margin="5 0 5 0"
+            <Slider x:Name="TimeLimitSlider"
+                    Margin="5 0 5 0"
                     TickPlacement="BottomRight"
                     TickFrequency="5"
                     Minimum="5"
                     Maximum="120"
+                    Value="{Binding TimeLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     IsSnapToTickEnabled="True"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 20 0 0">
-                <Button Content="Apply" Width="60" Margin="0 0 10 0"/>
-                <Button Content="Cancel" Width="60"/>
+                <Button Content="Apply" Width="60" Margin="0 0 10 0" Click="Button_Click_Apply"/>
+                <Button Content="Cancel" Width="60" Click="Button_Click_Cancel"/>
             </StackPanel>
         </StackPanel>
     </Grid>

@@ -1,5 +1,8 @@
-﻿using QuizConfigurator.Model;
+﻿using QuizConfigurator.Enums;
+using QuizConfigurator.Model;
 using System.Collections.ObjectModel;
+using System.Text.Json.Serialization;
+
 
 namespace QuizConfigurator.ViewModel
 {
@@ -13,15 +16,16 @@ namespace QuizConfigurator.ViewModel
         private readonly QuestionPack model;
 
 
-        public string Name 
-        { 
+        public string Name
+        {
             get => model.Name;
-            set 
+            set
             {
                 model.Name = value;
                 RaisePropertyChanged();
             }
         }
+        
         public Difficulty Difficulty
         {
             get => model.Difficulty;

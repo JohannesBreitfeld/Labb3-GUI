@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using QuizConfigurator.Enums;
 namespace QuizConfigurator.Model
 {
-    enum Difficulty { Easy, Medium, Hard }
+
     class QuestionPack
     {
         public QuestionPack(string name, Difficulty difficulty = Difficulty.Medium, int timeLimitInSeconds = 30)

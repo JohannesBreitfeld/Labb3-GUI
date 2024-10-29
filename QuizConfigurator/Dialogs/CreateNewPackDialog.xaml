@@ -7,30 +7,48 @@
         mc:Ignorable="d"
         Title="New Question Pack" Height="240" Width="200"
         ResizeMode="NoResize">
+
+    <Window.DataContext>
+        <local:CreatePackDialogService/>
+    </Window.DataContext>
+
     <Grid>
         <StackPanel Margin="0 5 0 0">
-            <Label Content="Pack Name:"
-            FontWeight="Bold"/>
-            <TextBox Margin="5 0 5 0"/>
-            <Label Content="Difficulty:"
-            FontWeight="Bold"/>
-            <ComboBox Margin="5 0 5 0"/>
+            <Label Content="Pack Name:" FontWeight="Bold"/>
+            <TextBox x:Name="PackNameTextBox" 
+                     Text="&lt;Pack Name&gt;"
+                     Margin="5 0 5 0"/>
+            
+            <Label Content="Difficulty:" FontWeight="Bold"/>
+            <ComboBox x:Name="DifficultyComboBox" 
+                      Margin="5 0 5 0"
+                      ItemsSource="{Binding Difficulties}"
+                      SelectedItem="{Binding SetDifficulty, Mode=TwoWay}">
+            </ComboBox>
+
             <StackPanel Orientation="Horizontal">
                 <Label Content="Time Limit:" 
                 FontWeight="Bold"
                 Width="100"/>
-                <Label Content="150" Width="30" HorizontalAlignment="Left"/>
+                <Label Content="{Binding ElementName=TimeLimitSlider, Path=Value}" Width="30" HorizontalAlignment="Left"/>
                 <Label Content="Seconds"/>
             </StackPanel>
-            <Slider Margin="5 0 5 0"
-             TickPlacement="BottomRight"
-             TickFrequency="5"
-             Minimum="5"
-             Maximum="120"
-             IsSnapToTickEnabled="True"/>
+            <Slider x:Name="TimeLimitSlider"
+                    Margin="5 0 5 0"
+                    TickPlacement="BottomRight"
+                    TickFrequency="5"
+                    Minimum="5"
+                    Maximum="120"
+                    Value="30"
+                    SelectionStart="30"
+                    IsSnapToTickEnabled="True"/>
+
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 20 0 0">
-                <Button Content="Create" Width="60" Margin="0 0 10 0"/>
-                <Button Content="Cancel" Width="60"/>
+                <Button Content="Create" 
+                        Width="60" 
+                        Margin="0 0 10 0"
+                        Click="Button_ClickCreate"/>
+                <Button Content="Cancel" Width="60" Click="Button_ClickCancel"/>
             </StackPanel>
         </StackPanel>
     </Grid>

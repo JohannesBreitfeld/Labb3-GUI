@@ -1,4 +1,4 @@
-﻿using QuizConfigurator.Model;
+﻿using QuizConfigurator.Dialogs;
 using QuizConfigurator.ViewModel;
 using System.Windows;
 
@@ -12,7 +12,7 @@ namespace QuizConfigurator
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainWindowViewModel();
+            DataContext = new MainWindowViewModel(new CreatePackDialogService());
         }
     }
 }

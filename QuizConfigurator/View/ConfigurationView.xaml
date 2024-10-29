@@ -33,13 +33,16 @@
                         Orientation="Horizontal"
                         Margin="5">
                 <Button Margin="0 0 5 0" Content="{fa:Icon Bars}" Width="20"
-                        Command="{Binding OpenPackOptionsCommand}"/>
+                        Command="{Binding OpenPackOptionsCommand}"
+                        ToolTip="Pack Options"/>
 
                 <Button Content="{fa:Icon Plus}" Width="20" 
-                        Command="{Binding AddQuestionCommand}"/>
+                        Command="{Binding AddQuestionCommand}"
+                        ToolTip="Add Question"/>
 
                 <Button Content="{fa:Icon Minus}" Margin="5 0 0 0" Width="20" 
-                        Command="{Binding DeleteQuestionCommand}"/>
+                        Command="{Binding DeleteQuestionCommand}"
+                        ToolTip="Remove Question"/>
 
             </StackPanel>
         </Grid>

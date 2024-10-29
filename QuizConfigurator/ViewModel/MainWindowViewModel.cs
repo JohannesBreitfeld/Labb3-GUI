@@ -1,7 +1,7 @@
 ﻿using QuizConfigurator.Command;
 using QuizConfigurator.Dialogs;
 using QuizConfigurator.Model;
-using QuizConfigurator.Model.DataAcess;
+using QuizConfigurator.Model.DataAccess;
 using System.Collections.ObjectModel;
 
 namespace QuizConfigurator.ViewModel

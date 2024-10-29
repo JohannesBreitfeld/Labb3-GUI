@@ -5,7 +5,7 @@ using System.IO;
 using System.Text.Json;
 using QuizConfigurator.Enums;
 
-namespace QuizConfigurator.Model.DataAcess
+namespace QuizConfigurator.Model.DataAccess
 {
     internal class QuestionPacksRepository
     {
@@ -26,12 +26,11 @@ namespace QuizConfigurator.Model.DataAcess
             return packs;
         }
 
-        public void Write(ObservableCollection<QuestionPackViewModel> packs)
+        public async void Write(ObservableCollection<QuestionPackViewModel> packs)
         {
-            var json = JsonSerializer.Serialize(packs);
-            
-            
-            File.WriteAllText(FilePath, json);
+            await using FileStream createStream = File.Create(FilePath);
+            await JsonSerializer.SerializeAsync(createStream, packs);
+
         }
     }
 }

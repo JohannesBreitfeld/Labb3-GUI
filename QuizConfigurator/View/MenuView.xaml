@@ -44,10 +44,10 @@
                 <Separator/>
                 <MenuItem Header="_Save" Icon="{fa:Icon FloppyDisk}" 
                           InputGestureText="Ctrl + S" 
-                          
                           Command="{Binding SaveCommand}"/>
                 <Separator/>
-                <MenuItem Header="E_xit" InputGestureText="Alt + F4"/>
+                <MenuItem Header="E_xit" InputGestureText="Alt + F4"
+                          Icon="{fa:Icon DoorOpen}"/>
             </MenuItem>
             <MenuItem Header="_Edit" DataContext="{Binding ConfigurationViewModel}">
                 <MenuItem Header="_Add Question" 
@@ -58,7 +58,10 @@
                           Icon="{fa:Icon Minus}" 
                           InputGestureText="Delete"
                           Command="{Binding DeleteQuestionCommand}"/>
-                <MenuItem Header="Pack _Options" Icon="{fa:Icon Bars}" InputGestureText="Ctrl + O"/>
+                <MenuItem Header="Pack _Options" 
+                          Icon="{fa:Icon Bars}" 
+                          InputGestureText="Ctrl + O"
+                          Command="{Binding OpenPackOptionsCommand}"/>
             </MenuItem>
             <MenuItem Header="_View">
                 <MenuItem Header="_Play" Icon="{fa:Icon Play}" InputGestureText="Ctrl + P"/>

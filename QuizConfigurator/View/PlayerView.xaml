@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:QuizConfigurator.View"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" d:Background="White">
+             d:DesignHeight="450" d:DesignWidth="800" d:Background="White"
+             Loaded="UserControl_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -30,13 +31,13 @@
                     Grid.Column="1" 
                     HorizontalAlignment="Center">
             <TextBlock TextWrapping="WrapWithOverflow" 
-                       Text="This is where the questions will go when the game is played" 
+                       Text="{Binding CurrentQuestion.Query}" 
                        FontSize="28"
                        TextAlignment="Center"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
                 <Label Content="Question" 
                         FontSize="15"/>
-                <Label Content="2" 
+                <Label Content="{Binding CurrentQuestionIndex}" 
                         FontSize="15"/>
                 <Label Content="of" 
                         FontSize="15"/>
@@ -56,26 +57,34 @@
                         VerticalAlignment="Bottom" 
                         HorizontalAlignment="Center" 
                         Margin="0 0 0 20">
-                <Button Content="Answer 1" 
+                <Button Content="{Binding CurrentAnswers[0]}" 
                         Width="220" 
                         Height="80"
-                        Margin="0 0 20 0"/>
-                <Button Content="Answer 2" 
+                        Margin="0 0 20 0"
+                        Command="{Binding AnswerSelectedCommand}"
+                        CommandParameter="{Binding CurrentAnswers[0]}"/>
+                <Button Content="{Binding CurrentAnswers[1]}" 
                         Width="220" 
-                        Height="80"/>
+                        Height="80"
+                        Command="{Binding AnswerSelectedCommand}"
+                        CommandParameter="{Binding CurrentAnswers[1]}"/>
             </StackPanel>
             
             <StackPanel Grid.Row="1" 
                         Orientation="Horizontal" 
                         VerticalAlignment="Top" 
                         HorizontalAlignment="Center">
-                <Button Content="Answer 3" 
+                <Button Content="{Binding CurrentAnswers[2]}" 
                         Width="220" 
                         Height="80"
-                        Margin="0 0 20 0"/>
-                <Button Content="Answer 4" 
+                        Margin="0 0 20 0"
+                        Command="{Binding AnswerSelectedCommand}"
+                        CommandParameter="{Binding CurrentAnswers[2]}"/>
+                <Button Content="{Binding CurrentAnswers[3]}" 
                         Width="220" 
-                        Height="80"/>
+                        Height="80"
+                        Command="{Binding AnswerSelectedCommand}"
+                        CommandParameter="{Binding CurrentAnswers[3]}"/>
             </StackPanel>
 
         </Grid>

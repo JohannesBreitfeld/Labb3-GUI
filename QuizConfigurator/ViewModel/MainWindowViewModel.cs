@@ -8,6 +8,18 @@ namespace QuizConfigurator.ViewModel
 {
     internal class MainWindowViewModel : ViewModelBase
     {
+        private ViewModelBase _selectedViewModel;
+        public ViewModelBase SelectedViewModel
+        {
+            get => _selectedViewModel;
+            set
+            {
+                _selectedViewModel = value;
+                RaisePropertyChanged();
+                SetConfigurationViewCommand?.RaiseCanExecuteChanged();
+                SetPlayerViewCommand?.RaiseCanExecuteChanged();
+            }
+        }
         public PlayerViewModel? PlayerViewModel { get; }
         public ConfigurationViewModel? ConfigurationViewModel { get; }
         public ICreatePackDialogService CreatePackDialogService { get; }
@@ -40,6 +52,7 @@ namespace QuizConfigurator.ViewModel
         {
             PlayerViewModel = new PlayerViewModel(this);
             ConfigurationViewModel = new ConfigurationViewModel(this, new PackOptionsDialogService());
+            SelectedViewModel = ConfigurationViewModel;
             QuestionPacksRepository = new QuestionPacksRepository();
             CreatePackDialogService = createPackDialogService;
             OpenCreatePackCommand = new(OpenCreatePackDialog);
@@ -47,13 +60,38 @@ namespace QuizConfigurator.ViewModel
             DeletePackCommand = new(DeletePack, CanDeletePack);
             SaveCommand = new(Save);
 
+            SetConfigurationViewCommand = new(_selectedViewModel => SelectedViewModel = ConfigurationViewModel, 
+                                              _selectedViewModel => SelectedViewModel != ConfigurationViewModel);
+
+            SetPlayerViewCommand = new(_selectedViewModel => SelectedViewModel = PlayerViewModel,
+                                       _selectedViewModel => SelectedViewModel != PlayerViewModel);
             Packs = new ObservableCollection<QuestionPackViewModel>();
             Load();
            
             
         }
 
-        private async void Load() 
+        public DelegateCommand SetPlayerViewCommand { get; }
+        public DelegateCommand SetConfigurationViewCommand { get; }
+        public DelegateCommand SetActivePackCommand { get; }
+        public DelegateCommand DeletePackCommand { get; }
+        public DelegateCommand OpenCreatePackCommand { get; }
+        public DelegateCommand SaveCommand { get; }
+        private void SetActivePack(object obj)
+        {
+            ActivePack = obj as QuestionPackViewModel;
+        }
+        private void OpenCreatePackDialog(object obj)
+        {
+            var newPack = CreatePackDialogService.ShowDialog();
+            if (newPack != null)
+            {
+                Packs?.Add(newPack);
+                ActivePack = newPack;
+            }
+            DeletePackCommand.RaiseCanExecuteChanged();
+        }
+        private async void Load()
         {
             ObservableCollection<QuestionPack> loadedPacks = await QuestionPacksRepository.Read();
 
@@ -87,25 +125,5 @@ namespace QuizConfigurator.ViewModel
             ActivePack = Packs?.FirstOrDefault();
             DeletePackCommand.RaiseCanExecuteChanged();
         }
-
-        public DelegateCommand SetActivePackCommand { get; }
-        public DelegateCommand DeletePackCommand { get; }
-        public DelegateCommand OpenCreatePackCommand { get; }
-        public DelegateCommand SaveCommand { get; }
-        private void SetActivePack(object obj)
-        {
-            ActivePack = obj as QuestionPackViewModel;
-        }
-        private void OpenCreatePackDialog(object obj)
-        {
-            var newPack = CreatePackDialogService.ShowDialog();
-            if (newPack != null)
-            {
-                Packs?.Add(newPack);
-                ActivePack = newPack;
-            }
-            DeletePackCommand.RaiseCanExecuteChanged();
-        }
-
     }
 }

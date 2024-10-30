@@ -3,19 +3,28 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:QuizConfigurator" xmlns:view="clr-namespace:QuizConfigurator.View"
+        xmlns:local="clr-namespace:QuizConfigurator" 
+        xmlns:view="clr-namespace:QuizConfigurator.View"
+        xmlns:viewmodel="clr-namespace:QuizConfigurator.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" MinHeight="450" MinWidth="700">
-    <Window.InputBindings>
-
-        
-    </Window.InputBindings>
+    
+    
+    <Window.Resources>
+    <DataTemplate DataType="{x:Type viewmodel:ConfigurationViewModel}">
+            <view:ConfigurationView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodel:PlayerViewModel}">
+            <view:PlayerView/>
+        </DataTemplate>
+    </Window.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <view:MenuView />
-        <view:ConfigurationView Grid.Row="1"/>
+        <ContentControl Content="{Binding SelectedViewModel}" Grid.Row="1"/>
     </Grid>
 </Window>

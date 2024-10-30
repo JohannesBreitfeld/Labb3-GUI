@@ -64,8 +64,10 @@
                           Command="{Binding OpenPackOptionsCommand}"/>
             </MenuItem>
             <MenuItem Header="_View">
-                <MenuItem Header="_Play" Icon="{fa:Icon Play}" InputGestureText="Ctrl + P"/>
-                <MenuItem Header="_Edit" Icon="{fa:Icon Gears}" InputGestureText="Ctrl + E"/>
+                <MenuItem Header="_Play" Icon="{fa:Icon Play}" InputGestureText="Ctrl + P"
+                          Command="{Binding SetPlayerViewCommand}"/>
+                <MenuItem Header="_Edit" Icon="{fa:Icon Gears}" InputGestureText="Ctrl + E"
+                          Command="{Binding SetConfigurationViewCommand}"/>
                 <Separator/>
                 <MenuItem Header="_Fullscreen" Icon="{fa:Icon Expand}" InputGestureText="Alt + Enter"/>
             </MenuItem>

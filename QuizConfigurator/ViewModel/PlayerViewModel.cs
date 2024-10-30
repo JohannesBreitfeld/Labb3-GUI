@@ -9,13 +9,27 @@ namespace QuizConfigurator.ViewModel
     internal class PlayerViewModel : ViewModelBase
     {
         private readonly MainWindowViewModel? mainWindowViewModel;
+        private DispatcherTimer timer;
         private Question _currentQuestion;
         private int _currentQuestionIndex;
+        private int _timeLeft;
         private ObservableCollection<string> _currentAnswers;
         private ObservableCollection<Question> _questionsInRandomOrder;
         public int Score { get; set; }
         public QuestionPackViewModel? ActivePack { get => mainWindowViewModel?.ActivePack; }
-       
+        public int TimeLeft
+        {
+            get { return _timeLeft; }
+            set
+            {
+                _timeLeft = value;
+                RaisePropertyChanged();
+                if (value == 0)
+                {
+                    AnswerSelected(null);
+                }
+            }
+        }
         public ObservableCollection<string> CurrentAnswers 
         { 
             get => _currentAnswers;
@@ -54,10 +68,12 @@ namespace QuizConfigurator.ViewModel
         public PlayerViewModel(MainWindowViewModel? mainWindowViewModel)
         {
             this.mainWindowViewModel = mainWindowViewModel;
-            QuestionsInRandomOrder = new ObservableCollection<Question>();
-            _currentQuestionIndex = 0;
             StartGameCommand = new(StartGame);
             AnswerSelectedCommand = new(AnswerSelected);
+
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += Timer_Tick;
         }
         public DelegateCommand AnswerSelectedCommand { get; }
         public DelegateCommand StartGameCommand { get; }
@@ -65,20 +81,23 @@ namespace QuizConfigurator.ViewModel
         private void StartGame(object obj)
         {
             Score = 0;
+            CurrentQuestionIndex = 1;
             if (ActivePack != null && ActivePack.Questions.Count > 0)
             {
                 Random random = new Random();
-                List<Question> q =  new(ActivePack.Questions.OrderBy(q => random.Next()).ToList());
-                q.ForEach(q => QuestionsInRandomOrder.Add(q));
+                QuestionsInRandomOrder =  new(ActivePack.Questions.OrderBy(q => random.Next()).ToList());
+
                 ShowNextQuestion();
             }
         }
 
         private void ShowNextQuestion()
         {
-            if (CurrentQuestionIndex < QuestionsInRandomOrder.Count)
+            if (CurrentQuestionIndex - 1 < QuestionsInRandomOrder.Count)
             {
-                CurrentQuestion = QuestionsInRandomOrder[CurrentQuestionIndex];
+                TimeLeft = ActivePack.TimeLimitInSeconds;
+                timer.Start();
+                CurrentQuestion = QuestionsInRandomOrder[CurrentQuestionIndex - 1];
                 SetAnswers();
             }
             else
@@ -109,29 +128,11 @@ namespace QuizConfigurator.ViewModel
             CurrentQuestionIndex++;
             ShowNextQuestion();
         }
+        private void Timer_Tick(object? sender, EventArgs e)
+        {
+            TimeLeft--;
+        }
     }
 }
-//private DispatcherTimer timer;
-//private int _timeLeft;
-//public int TimeLeft
-//{
-//    get { return _timeLeft; }
-//    set 
-//    {
-//        _timeLeft = value;
-//        RaisePropertyChanged();
-//    }
-//}
-//TimeLeft = ActivePack.TimeLimitInSeconds;
-////Behöver konfigureras
-//timer = new DispatcherTimer();
-//timer.Interval = TimeSpan.FromSeconds(1);
-//timer.Tick += Timer_Tick;
-////timer.Start();
-//UpdateButtonCommand = new DelegateCommand(UpdateButton);
-//AddQuestionCommand = new DelegateCommand(AddQuestion, CanAddQuestion);
 
-//private void Timer_Tick(object? sender, EventArgs e)
-//{
-//    //TimeLeft--;
-//}
+

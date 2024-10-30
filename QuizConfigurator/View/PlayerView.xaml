@@ -19,7 +19,7 @@
 
         </Grid.ColumnDefinitions>
 
-        <Label Content="49" 
+        <Label Content="{Binding TimeLeft}" 
                FontSize="28" 
                FontWeight="Bold"
                HorizontalAlignment="Right" 
@@ -41,7 +41,7 @@
                         FontSize="15"/>
                 <Label Content="of" 
                         FontSize="15"/>
-                <Label Content="15" 
+                <Label Content="{Binding ActivePack.Questions.Count}" 
                         FontSize="15"/>
             </StackPanel>
             

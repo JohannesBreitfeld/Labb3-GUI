@@ -4,22 +4,28 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:QuizConfigurator.View"
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" d:Background="White"
              Loaded="UserControl_Loaded">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" MinWidth="40"/>
-            <ColumnDefinition Width="560"/>
-            <ColumnDefinition Width="*" MinWidth="40"/>
 
-        </Grid.ColumnDefinitions>
+        <Grid Visibility="{Binding IsPlaying, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="1.1*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="40"/>
+                <ColumnDefinition Width="560"/>
+                <ColumnDefinition Width="*" MinWidth="40"/>
 
-        <Label Content="{Binding TimeLeft}" 
+            </Grid.ColumnDefinitions>
+
+            <Label Content="{Binding TimeLeft}" 
                FontSize="28" 
                FontWeight="Bold"
                HorizontalAlignment="Right" 
@@ -27,67 +33,104 @@
                Margin="5"
                Grid.Column="2"/>
 
-        <StackPanel VerticalAlignment="Center" 
+            <StackPanel VerticalAlignment="Center" 
                     Grid.Column="1" 
                     HorizontalAlignment="Center">
-            <TextBlock TextWrapping="WrapWithOverflow" 
+                <TextBlock TextWrapping="WrapWithOverflow" 
                        Text="{Binding CurrentQuestion.Query}" 
                        FontSize="28"
                        TextAlignment="Center"/>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
-                <Label Content="Question" 
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                    <Label Content="Question" 
                         FontSize="15"/>
-                <Label Content="{Binding CurrentQuestionIndex}" 
+                    <Label Content="{Binding CurrentQuestionIndex}" 
                         FontSize="15"/>
-                <Label Content="of" 
+                    <Label Content="of" 
                         FontSize="15"/>
-                <Label Content="{Binding ActivePack.Questions.Count}" 
+                    <Label Content="{Binding ActivePack.Questions.Count}" 
                         FontSize="15"/>
-            </StackPanel>
-            
-            
-        </StackPanel>
-        <Grid Grid.Row="1" Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+                </StackPanel>
 
-            <StackPanel Orientation="Horizontal" 
+
+            </StackPanel>
+            <Grid Grid.Row="1" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Horizontal" 
                         VerticalAlignment="Bottom" 
                         HorizontalAlignment="Center" 
                         Margin="0 0 0 20">
-                <Button Content="{Binding CurrentAnswers[0]}" 
+                    <Button Content="{Binding CurrentAnswers[0]}" 
                         Width="220" 
                         Height="80"
                         Margin="0 0 20 0"
                         Command="{Binding AnswerSelectedCommand}"
                         CommandParameter="{Binding CurrentAnswers[0]}"/>
-                <Button Content="{Binding CurrentAnswers[1]}" 
+                    <Button Content="{Binding CurrentAnswers[1]}" 
                         Width="220" 
                         Height="80"
                         Command="{Binding AnswerSelectedCommand}"
                         CommandParameter="{Binding CurrentAnswers[1]}"/>
-            </StackPanel>
-            
-            <StackPanel Grid.Row="1" 
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" 
                         Orientation="Horizontal" 
                         VerticalAlignment="Top" 
                         HorizontalAlignment="Center">
-                <Button Content="{Binding CurrentAnswers[2]}" 
+                    <Button Content="{Binding CurrentAnswers[2]}" 
                         Width="220" 
                         Height="80"
                         Margin="0 0 20 0"
                         Command="{Binding AnswerSelectedCommand}"
                         CommandParameter="{Binding CurrentAnswers[2]}"/>
-                <Button Content="{Binding CurrentAnswers[3]}" 
+                    <Button Content="{Binding CurrentAnswers[3]}" 
                         Width="220" 
                         Height="80"
                         Command="{Binding AnswerSelectedCommand}"
                         CommandParameter="{Binding CurrentAnswers[3]}"/>
-            </StackPanel>
+                </StackPanel>
 
+            </Grid>
         </Grid>
         
+        <!--ResultView-->
+        
+        <Grid Visibility="{Binding IsGameOver, Converter={StaticResource BoolToVisibilityConverter}}">
+
+
+
+            <StackPanel VerticalAlignment="Center" 
+            HorizontalAlignment="Center">
+                <TextBlock TextWrapping="WrapWithOverflow" 
+               Text="Complete!" 
+               FontSize="28"
+               TextAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                    <Label Content="You got" 
+                FontSize="15"/>
+                    <Label Content="{Binding Score}" 
+                FontSize="15"/>
+                    <Label Content="out of" 
+                FontSize="15"/>
+                    <Label Content="{Binding ActivePack.Questions.Count}" 
+                FontSize="15"/>
+                    <Label Content="correct!"
+                           FontSize="15"/>
+                </StackPanel>
+                <Button Command="{Binding StartGameCommand}" Width="100">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <fa:IconBlock Icon="ArrowsRotate"/>
+                            <TextBlock Text="Restart" FontSize="15"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+
+            </StackPanel>
+        </Grid>
     </Grid>
+    
 </UserControl>

@@ -8,14 +8,43 @@ namespace QuizConfigurator.ViewModel
 {
     internal class PlayerViewModel : ViewModelBase
     {
-        private readonly MainWindowViewModel? mainWindowViewModel;
         private DispatcherTimer timer;
         private Question _currentQuestion;
         private int _currentQuestionIndex;
         private int _timeLeft;
+        private int _score;
+        private bool _isPlaying;
+        private bool _isGameOver;
         private ObservableCollection<string> _currentAnswers;
         private ObservableCollection<Question> _questionsInRandomOrder;
-        public int Score { get; set; }
+        private readonly MainWindowViewModel? mainWindowViewModel;
+        public int Score 
+        {
+            get => _score;
+            set
+            {
+                _score = value;
+                RaisePropertyChanged();
+            }
+        }
+        public bool IsGameOver 
+        {
+            get => _isGameOver;
+            set
+            {
+                _isGameOver = value;
+                RaisePropertyChanged();
+            } 
+        }
+        public bool IsPlaying 
+        {
+            get => _isPlaying;
+            set
+            {
+                _isPlaying = value;
+                RaisePropertyChanged();
+            }
+        }
         public QuestionPackViewModel? ActivePack { get => mainWindowViewModel?.ActivePack; }
         public int TimeLeft
         {
@@ -80,8 +109,10 @@ namespace QuizConfigurator.ViewModel
 
         private void StartGame(object obj)
         {
+            IsGameOver = false;
+            IsPlaying = true;
             Score = 0;
-            CurrentQuestionIndex = 1;
+            CurrentQuestionIndex = 0;
             if (ActivePack != null && ActivePack.Questions.Count > 0)
             {
                 Random random = new Random();
@@ -93,6 +124,8 @@ namespace QuizConfigurator.ViewModel
 
         private void ShowNextQuestion()
         {
+            CurrentQuestionIndex++;
+
             if (CurrentQuestionIndex - 1 < QuestionsInRandomOrder.Count)
             {
                 TimeLeft = ActivePack.TimeLimitInSeconds;
@@ -102,7 +135,9 @@ namespace QuizConfigurator.ViewModel
             }
             else
             {
-                // Game Over
+                timer.Stop();
+                IsGameOver = true;
+                IsPlaying = false;
             }
         }
         private void SetAnswers()
@@ -125,7 +160,6 @@ namespace QuizConfigurator.ViewModel
                     // Wrong answer
                 }
             }
-            CurrentQuestionIndex++;
             ShowNextQuestion();
         }
         private void Timer_Tick(object? sender, EventArgs e)

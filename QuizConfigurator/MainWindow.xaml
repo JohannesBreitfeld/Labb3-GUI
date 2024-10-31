@@ -6,19 +6,27 @@
         xmlns:local="clr-namespace:QuizConfigurator" 
         xmlns:view="clr-namespace:QuizConfigurator.View"
         xmlns:viewmodel="clr-namespace:QuizConfigurator.ViewModel"
+        xmlns:converters="clr-namespace:QuizConfigurator.Converters"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" MinHeight="450" MinWidth="700">
-    
-    
+
     <Window.Resources>
-    <DataTemplate DataType="{x:Type viewmodel:ConfigurationViewModel}">
+        <converters:BoolToWindowStyleConverter x:Key="BoolToWindowStyleConverter"/>
+        <converters:BoolToWindowStateConverter x:Key="BoolToWindowStateConverter"/>
+
+        <Style TargetType="local:MainWindow">
+            <Setter Property="WindowState" Value="{Binding IsFullscreen, Converter={StaticResource BoolToWindowStateConverter}}"/>
+            <Setter Property="WindowStyle" Value="{Binding IsFullscreen, Converter={StaticResource BoolToWindowStyleConverter}}"/>
+        </Style>
+
+        <DataTemplate DataType="{x:Type viewmodel:ConfigurationViewModel}">
             <view:ConfigurationView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewmodel:PlayerViewModel}">
             <view:PlayerView/>
         </DataTemplate>
     </Window.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

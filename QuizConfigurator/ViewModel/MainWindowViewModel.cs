@@ -3,12 +3,17 @@ using QuizConfigurator.Dialogs;
 using QuizConfigurator.Model;
 using QuizConfigurator.Model.DataAccess;
 using System.Collections.ObjectModel;
+using System.Security.AccessControl;
 
 namespace QuizConfigurator.ViewModel
 {
     internal class MainWindowViewModel : ViewModelBase
     {
         private ViewModelBase _selectedViewModel;
+        private QuestionPackViewModel? _activePack;
+        private ObservableCollection<QuestionPackViewModel> _packs;
+        private bool _isFullscreen;  
+        
         public ViewModelBase SelectedViewModel
         {
             get => _selectedViewModel;
@@ -19,12 +24,11 @@ namespace QuizConfigurator.ViewModel
                 SetConfigurationViewCommand?.RaiseCanExecuteChanged();
                 SetPlayerViewCommand?.RaiseCanExecuteChanged();
             }
-        }
+        }    
         public PlayerViewModel? PlayerViewModel { get; }
         public ConfigurationViewModel? ConfigurationViewModel { get; }
         public ICreatePackDialogService CreatePackDialogService { get; }
         public QuestionPacksRepository QuestionPacksRepository { get; }
-        private ObservableCollection<QuestionPackViewModel> _packs;
         public ObservableCollection<QuestionPackViewModel>? Packs
         {
             get => _packs; 
@@ -35,8 +39,6 @@ namespace QuizConfigurator.ViewModel
                 DeletePackCommand.RaiseCanExecuteChanged();
             }
         }
-        private QuestionPackViewModel? _activePack;
-
         public QuestionPackViewModel? ActivePack
         {
             get => _activePack;
@@ -46,8 +48,17 @@ namespace QuizConfigurator.ViewModel
                 RaisePropertyChanged();
                 ConfigurationViewModel?.RaisePropertyChanged("ActivePack");
             }
+        }     
+        public bool IsFullscreen 
+        { 
+            get => _isFullscreen;
+            set
+            {
+                _isFullscreen = value;
+                RaisePropertyChanged();
+            }
         }
-  
+
         public MainWindowViewModel(ICreatePackDialogService createPackDialogService)
         {
             PlayerViewModel = new PlayerViewModel(this);
@@ -59,6 +70,8 @@ namespace QuizConfigurator.ViewModel
             SetActivePackCommand = new(SetActivePack);
             DeletePackCommand = new(DeletePack, CanDeletePack);
             SaveCommand = new(Save);
+            ExitAppCommand = new(ExitApp);
+            ToggleFullscreenCommand = new(ToggleFullscreen);
 
             SetConfigurationViewCommand = new(_selectedViewModel => SelectedViewModel = ConfigurationViewModel, 
                                               _selectedViewModel => SelectedViewModel != ConfigurationViewModel);
@@ -66,9 +79,13 @@ namespace QuizConfigurator.ViewModel
             SetPlayerViewCommand = new(_selectedViewModel => SelectedViewModel = PlayerViewModel,
                                        _selectedViewModel => SelectedViewModel != PlayerViewModel);
             Packs = new ObservableCollection<QuestionPackViewModel>();
-            Load();
-           
             
+            Load();
+           }
+
+        private void ToggleFullscreen(object obj)
+        {
+            IsFullscreen = !IsFullscreen;
         }
 
         public DelegateCommand SetPlayerViewCommand { get; }
@@ -77,10 +94,18 @@ namespace QuizConfigurator.ViewModel
         public DelegateCommand DeletePackCommand { get; }
         public DelegateCommand OpenCreatePackCommand { get; }
         public DelegateCommand SaveCommand { get; }
+        public DelegateCommand ExitAppCommand { get; }
+        public DelegateCommand ToggleFullscreenCommand { get; }
+
+
         private void SetActivePack(object obj)
         {
-            ActivePack = obj as QuestionPackViewModel;
+            if (obj is QuestionPackViewModel pack)
+            {
+                ActivePack = pack;
+            }
         }
+        
         private void OpenCreatePackDialog(object obj)
         {
             var newPack = CreatePackDialogService.ShowDialog();
@@ -91,6 +116,7 @@ namespace QuizConfigurator.ViewModel
             }
             DeletePackCommand.RaiseCanExecuteChanged();
         }
+       
         private async void Load()
         {
             ObservableCollection<QuestionPack> loadedPacks = await QuestionPacksRepository.Read();
@@ -109,6 +135,7 @@ namespace QuizConfigurator.ViewModel
 
             ActivePack = Packs.FirstOrDefault();
         }
+ 
         private void Save(object obj)
         {
             QuestionPacksRepository.Write(Packs);
@@ -124,6 +151,12 @@ namespace QuizConfigurator.ViewModel
             Packs?.Remove(ActivePack);
             ActivePack = Packs?.FirstOrDefault();
             DeletePackCommand.RaiseCanExecuteChanged();
+        }
+
+        private void ExitApp(object obj)
+        {
+            Save(null);
+            Environment.Exit(0);
         }
     }
 }

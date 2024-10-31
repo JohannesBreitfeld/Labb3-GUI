@@ -5,15 +5,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:QuizConfigurator.View"
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+             xmlns:converters="clr-namespace:QuizConfigurator.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-   <!--<Style x:Key="CommandMenuItemStyle"
-          TargetType="{x:Type MenuItem}"
-        PropertyName-->
-    
-    
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:BoolToIconConverter x:Key="BoolToIconConverter"/>
+    </UserControl.Resources>
+
     <Grid>
         <Menu>
+ <!--File-->         
             <MenuItem Header="_File">
                 <MenuItem Header="_New Question Pack" 
                           Icon="{fa:Icon FolderPLus}" 
@@ -34,8 +37,6 @@
                     </MenuItem.ItemContainerStyle>
             </MenuItem>
 
-
-
             <MenuItem Header="_Delete Question Pack" Icon="{fa:Icon FolderMinus}"
                       Command="{Binding DeletePackCommand}"/>
                 
@@ -47,14 +48,16 @@
                           Command="{Binding SaveCommand}"/>
                 <Separator/>
                 <MenuItem Header="E_xit" InputGestureText="Alt + F4"
-                          Icon="{fa:Icon DoorOpen}"/>
+                          Icon="{fa:Icon DoorOpen}"
+                          Command="{Binding ExitAppCommand}"/>
             </MenuItem>
+ <!--Edit-->           
             <MenuItem Header="_Edit" DataContext="{Binding ConfigurationViewModel}">
                 <MenuItem Header="_Add Question" 
                           Icon="{fa:Icon Plus}" 
                           InputGestureText="Insert"
                           Command="{Binding AddQuestionCommand}"/>
-                <MenuItem Header="_Remove Quiestion" 
+                <MenuItem Header="_Remove Question" 
                           Icon="{fa:Icon Minus}" 
                           InputGestureText="Delete"
                           Command="{Binding DeleteQuestionCommand}"/>
@@ -63,13 +66,22 @@
                           InputGestureText="Ctrl + O"
                           Command="{Binding OpenPackOptionsCommand}"/>
             </MenuItem>
+ <!--View-->         
             <MenuItem Header="_View">
                 <MenuItem Header="_Play" Icon="{fa:Icon Play}" InputGestureText="Ctrl + P"
                           Command="{Binding SetPlayerViewCommand}"/>
                 <MenuItem Header="_Edit" Icon="{fa:Icon Gears}" InputGestureText="Ctrl + E"
                           Command="{Binding SetConfigurationViewCommand}"/>
                 <Separator/>
-                <MenuItem Header="_Fullscreen" Icon="{fa:Icon Expand}" InputGestureText="Alt + Enter"/>
+                <MenuItem Header="_Fullscreen"  
+                          InputGestureText="Alt + Enter"
+                          Command="{Binding ToggleFullscreenCommand}">
+                    <MenuItem.Icon>
+                        <fa:IconBlock Icon="{Binding IsFullscreen, Converter={StaticResource BoolToIconConverter}}"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+             
+
             </MenuItem>
         </Menu>
     </Grid>

@@ -27,6 +27,18 @@
         </DataTemplate>
     </Window.Resources>
 
+    <Window.InputBindings>
+        <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding SaveCommand}"/>
+        <KeyBinding Key="F4" Modifiers="Alt" Command="{Binding ExitCommand}"/>
+        <!--import binding-->
+        <KeyBinding Key="Insert" Command="{Binding ConfigurationViewModel.AddQuestionCommand}"/>
+        <KeyBinding Key="Delete" Command="{Binding ConfigurationViewModel.DeleteQuestionCommand}"/>
+        <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding ConfigurationViewModel.OpenPackOptionsCommand}"/>
+        <KeyBinding Key="P" Modifiers="Ctrl" Command="{Binding SetPlayerViewCommand}"/>
+        <KeyBinding Key="E" Modifiers="Ctrl" Command="{Binding SetConfigurationViewCommand}"/>
+        <KeyBinding Key="Return" Modifiers="Alt" Command="{Binding ToggleFullscreenCommand}"/>
+    </Window.InputBindings>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

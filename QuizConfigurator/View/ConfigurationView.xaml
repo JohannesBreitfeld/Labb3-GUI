@@ -10,11 +10,7 @@
     <UserControl.Resources>
         <converters:NullToVisibiltyConverter x:Key="NullToVisibilityConverter"/>
     </UserControl.Resources>
-    <UserControl.InputBindings>
-        <KeyBinding Key="Insert" Command="{Binding AddQuestionCommand}"/>
-        <KeyBinding Key="Delete" Command="{Binding DeleteQuestionCommand}"/>
-        <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding OpenPackOptionsCommand}"/>
-    </UserControl.InputBindings>
+  
 
 
     <Grid>

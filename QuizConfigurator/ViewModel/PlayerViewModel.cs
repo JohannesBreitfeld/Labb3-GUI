@@ -2,6 +2,7 @@
 using QuizConfigurator.Model;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace QuizConfigurator.ViewModel
@@ -18,6 +19,8 @@ namespace QuizConfigurator.ViewModel
         private ObservableCollection<string>? _currentAnswers;
         private ObservableCollection<Question>? _questionsInRandomOrder;
         private readonly MainWindowViewModel? mainWindowViewModel;
+        private ObservableCollection<ButtonColor>? _buttonColors;
+
         public int Score 
         {
             get => _score;
@@ -93,6 +96,15 @@ namespace QuizConfigurator.ViewModel
                 RaisePropertyChanged();
             } 
         }
+        public ObservableCollection<ButtonColor>? ButtonColors
+        {
+            get => _buttonColors;
+            set
+            {
+                _buttonColors = value;
+                RaisePropertyChanged();
+            }
+        }
 
         public PlayerViewModel(MainWindowViewModel? mainWindowViewModel)
         {
@@ -119,6 +131,11 @@ namespace QuizConfigurator.ViewModel
                 QuestionsInRandomOrder =  new(ActivePack.Questions.OrderBy(q => random.Next()).ToList());
 
                 ShowNextQuestion();
+            }
+            else
+            {
+                IsGameOver = true;
+                IsPlaying = false;
             }
         }
 
@@ -151,26 +168,50 @@ namespace QuizConfigurator.ViewModel
                 var answers = new List<string> { CurrentQuestion.CorrectAnswer };
                 answers.AddRange(CurrentQuestion.IncorrectAnswers);
                 CurrentAnswers = new ObservableCollection<string>(answers.OrderBy(a => random.Next()).ToList());
+                
+                ButtonColors = new ObservableCollection<ButtonColor>();
+                foreach (var answer in CurrentAnswers)
+                {
+                    ButtonColors.Add(new ButtonColor { Answer = answer, Color = new SolidColorBrush(Color.FromArgb(255, 200, 200, 200)) }); 
+                }
             }
         }
-        public void AnswerSelected(object? selectedAnswer)
+        public async void AnswerSelected(object? selectedAnswer)
         {
             if (selectedAnswer is string answer && CurrentQuestion != null)
             {
                 if (answer == CurrentQuestion.CorrectAnswer)
                 {
                     Score++;
+                    UpdateButtonColors(answer, true);
                 }
                 else
                 {
-                    // Wrong answer
+                    UpdateButtonColors(answer, false);
                 }
+                timer.Stop();
+                await Task.Delay(2000);
             }
             ShowNextQuestion();
         }
         private void Timer_Tick(object? sender, EventArgs e)
         {
             TimeLeft--;
+        }
+        private void UpdateButtonColors(string selectedAnswer, bool isCorrect)
+        {
+            for (int i = 0; i < ButtonColors?.Count; i++)
+            {
+                if (ButtonColors[i].Answer == CurrentQuestion?.CorrectAnswer)
+                {
+                    ButtonColors[i].Color = new SolidColorBrush(Color.FromArgb(255, 0, 255, 0)); 
+                }
+                else if (ButtonColors[i].Answer == selectedAnswer && !isCorrect)
+                {
+                    ButtonColors[i].Color = new SolidColorBrush(Color.FromArgb(255, 255, 0, 0)); 
+                }
+                RaisePropertyChanged(nameof(ButtonColors));
+            }
         }
     }
 }

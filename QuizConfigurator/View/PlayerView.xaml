@@ -4,12 +4,32 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:QuizConfigurator.View"
+             xmlns:converters="clr-namespace:QuizConfigurator.Converters"
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" d:Background="White"
              Loaded="UserControl_Loaded">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <Style x:Key="AnswerButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{Binding Color}"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
     <Grid>
 
@@ -68,12 +88,17 @@
                         Height="80"
                         Margin="0 0 20 0"
                         Command="{Binding AnswerSelectedCommand}"
-                        CommandParameter="{Binding CurrentAnswers[0]}"/>
+                        CommandParameter="{Binding CurrentAnswers[0]}"
+                        Background="{Binding ButtonColors[0].Color}"
+                            Style="{StaticResource AnswerButtonStyle}"/>
+
                     <Button Content="{Binding CurrentAnswers[1]}" 
                         Width="220" 
                         Height="80"
                         Command="{Binding AnswerSelectedCommand}"
-                        CommandParameter="{Binding CurrentAnswers[1]}"/>
+                        CommandParameter="{Binding CurrentAnswers[1]}"
+                        Background="{Binding ButtonColors[1].Color}"
+                        Style="{StaticResource AnswerButtonStyle}"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="1" 
@@ -85,12 +110,16 @@
                         Height="80"
                         Margin="0 0 20 0"
                         Command="{Binding AnswerSelectedCommand}"
-                        CommandParameter="{Binding CurrentAnswers[2]}"/>
+                        CommandParameter="{Binding CurrentAnswers[2]}"
+                        Background="{Binding ButtonColors[2].Color}"
+                        Style="{StaticResource AnswerButtonStyle}"/>
                     <Button Content="{Binding CurrentAnswers[3]}" 
                         Width="220" 
                         Height="80"
                         Command="{Binding AnswerSelectedCommand}"
-                        CommandParameter="{Binding CurrentAnswers[3]}"/>
+                        CommandParameter="{Binding CurrentAnswers[3]}"
+                        Background="{Binding ButtonColors[3].Color}"
+                        Style="{StaticResource AnswerButtonStyle}"/>
                 </StackPanel>
 
             </Grid>

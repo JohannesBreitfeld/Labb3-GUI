@@ -14,7 +14,7 @@ namespace QuizConfigurator.Dialogs
     internal class PackOptionsDialogService : IPackOptionsDialogService
     {
         public ObservableCollection<Difficulty> Difficulties { get; }
-        public string PackName { get; set; }
+        public string? PackName { get; set; }
         public Difficulty SetDifficulty { get; set; }
         public int TimeLimit { get; set; }
         public PackOptionsDialogService()

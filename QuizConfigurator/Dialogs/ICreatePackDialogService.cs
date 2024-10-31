@@ -4,6 +4,6 @@ namespace QuizConfigurator.Dialogs
 {
     internal interface ICreatePackDialogService
     {
-        QuestionPackViewModel ShowDialog();
+        QuestionPackViewModel? ShowDialog();
     }
 }

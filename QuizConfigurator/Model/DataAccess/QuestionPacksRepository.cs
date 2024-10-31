@@ -13,9 +13,9 @@ namespace QuizConfigurator.Model.DataAccess
         public string FilePath = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\QuizConfigurator\\QuestionPacks.json";
 
         
-        public async Task<ObservableCollection<QuestionPack>> Read()
+        public async Task<ObservableCollection<QuestionPack>?> Read()
         {
-            ObservableCollection<QuestionPack> packs = null;
+            ObservableCollection<QuestionPack>? packs = null;
             
             if (File.Exists(FilePath))
             {

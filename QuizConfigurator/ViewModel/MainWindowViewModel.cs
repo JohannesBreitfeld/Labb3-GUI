@@ -9,12 +9,12 @@ namespace QuizConfigurator.ViewModel
 {
     internal class MainWindowViewModel : ViewModelBase
     {
-        private ViewModelBase _selectedViewModel;
+        private ViewModelBase? _selectedViewModel;
         private QuestionPackViewModel? _activePack;
-        private ObservableCollection<QuestionPackViewModel> _packs;
+        private ObservableCollection<QuestionPackViewModel>? _packs;
         private bool _isFullscreen;  
         
-        public ViewModelBase SelectedViewModel
+        public ViewModelBase? SelectedViewModel
         {
             get => _selectedViewModel;
             set
@@ -78,7 +78,7 @@ namespace QuizConfigurator.ViewModel
 
             SetPlayerViewCommand = new(_selectedViewModel => SelectedViewModel = PlayerViewModel,
                                        _selectedViewModel => SelectedViewModel != PlayerViewModel);
-            Packs = new ObservableCollection<QuestionPackViewModel>();
+            Packs = [];
             
             Load();
            }
@@ -98,7 +98,7 @@ namespace QuizConfigurator.ViewModel
         public DelegateCommand ToggleFullscreenCommand { get; }
 
 
-        private void SetActivePack(object obj)
+        private void SetActivePack(object? obj)
         {
             if (obj is QuestionPackViewModel pack)
             {
@@ -106,7 +106,7 @@ namespace QuizConfigurator.ViewModel
             }
         }
         
-        private void OpenCreatePackDialog(object obj)
+        private void OpenCreatePackDialog(object? obj)
         {
             var newPack = CreatePackDialogService.ShowDialog();
             if (newPack != null)
@@ -119,41 +119,47 @@ namespace QuizConfigurator.ViewModel
        
         private async void Load()
         {
-            ObservableCollection<QuestionPack> loadedPacks = await QuestionPacksRepository.Read();
+            ObservableCollection<QuestionPack>? loadedPacks = await QuestionPacksRepository.Read();
 
             if (loadedPacks == null)
             {
-                Packs.Add(new QuestionPackViewModel(new QuestionPack("<Untitled Pack>")));
+                Packs?.Add(new QuestionPackViewModel(new QuestionPack("<Untitled Pack>")));
             }
             else
             {
                 foreach (var pack in loadedPacks)
                 {
-                    Packs.Add(new QuestionPackViewModel(pack));
+                    Packs?.Add(new QuestionPackViewModel(pack));
                 }
             }
 
-            ActivePack = Packs.FirstOrDefault();
+            ActivePack = Packs?.FirstOrDefault();
         }
  
-        private void Save(object obj)
+        private void Save(object? obj)
         {
-            QuestionPacksRepository.Write(Packs);
+            if (Packs != null)
+            {
+                QuestionPacksRepository.Write(Packs);
+            }
         }
 
         private bool CanDeletePack(object? arg)
         {
-            return Packs.Count > 1;
+            return Packs?.Count > 1;
         }
 
-        private void DeletePack(object obj)
+        private void DeletePack(object? obj)
         {
-            Packs?.Remove(ActivePack);
-            ActivePack = Packs?.FirstOrDefault();
-            DeletePackCommand.RaiseCanExecuteChanged();
+            if (ActivePack != null)
+            {
+                Packs?.Remove(ActivePack);
+                ActivePack = Packs?.FirstOrDefault();
+                DeletePackCommand.RaiseCanExecuteChanged();
+            }
         }
 
-        private void ExitApp(object obj)
+        private void ExitApp(object? obj)
         {
             Save(null);
             Environment.Exit(0);

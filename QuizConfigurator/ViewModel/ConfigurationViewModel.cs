@@ -19,8 +19,8 @@ namespace QuizConfigurator.ViewModel
 
         private readonly MainWindowViewModel? mainWindowViewModel;
         public QuestionPackViewModel? ActivePack => mainWindowViewModel?.ActivePack; 
-        private Question _activeQuestion;
-        public Question ActiveQuestion
+        private Question? _activeQuestion;
+        public Question? ActiveQuestion
         {
             get => _activeQuestion;
             set
@@ -46,15 +46,18 @@ namespace QuizConfigurator.ViewModel
 
         private void DeleteQuestion(object obj)
         {
-            ActivePack?.Questions.Remove(ActiveQuestion);
-            ActiveQuestion = null;
+            if (ActiveQuestion != null)
+            {
+                ActivePack?.Questions.Remove(ActiveQuestion);
+                ActiveQuestion = null;
+            }
         }
        
         private void OpenPackOptionsDialog(object obj)
         {
-            if (ActivePack != null)
+            if (mainWindowViewModel?.ActivePack != null)
             {
-                mainWindowViewModel.ActivePack = PackOptionsDialogService.ShowDialog(ActivePack);
+                mainWindowViewModel.ActivePack = PackOptionsDialogService.ShowDialog(mainWindowViewModel.ActivePack);
             }
         }
 

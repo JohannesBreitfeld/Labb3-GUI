@@ -22,14 +22,14 @@ namespace QuizConfigurator.Dialogs
             Difficulties = new((Difficulty[])System.Enum.GetValues(typeof(Difficulty)));
             SetDifficulty = Difficulty.Medium;
         }
-        public QuestionPackViewModel ShowDialog()
+        public QuestionPackViewModel? ShowDialog()
         {
             var dialog = new CreateNewPackDialog()
             {
                 DataContext = this
             };
 
-            QuestionPackViewModel newPack = null;
+            QuestionPackViewModel? newPack = null;
 
             var result = dialog.ShowDialog();
 

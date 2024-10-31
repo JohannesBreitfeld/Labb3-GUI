@@ -9,14 +9,14 @@ namespace QuizConfigurator.ViewModel
     internal class PlayerViewModel : ViewModelBase
     {
         private DispatcherTimer timer;
-        private Question _currentQuestion;
+        private Question? _currentQuestion;
         private int _currentQuestionIndex;
         private int _timeLeft;
         private int _score;
         private bool _isPlaying;
         private bool _isGameOver;
-        private ObservableCollection<string> _currentAnswers;
-        private ObservableCollection<Question> _questionsInRandomOrder;
+        private ObservableCollection<string>? _currentAnswers;
+        private ObservableCollection<Question>? _questionsInRandomOrder;
         private readonly MainWindowViewModel? mainWindowViewModel;
         public int Score 
         {
@@ -59,7 +59,7 @@ namespace QuizConfigurator.ViewModel
                 }
             }
         }
-        public ObservableCollection<string> CurrentAnswers 
+        public ObservableCollection<string>? CurrentAnswers 
         { 
             get => _currentAnswers;
             set
@@ -68,7 +68,7 @@ namespace QuizConfigurator.ViewModel
                 RaisePropertyChanged();
             }
         }
-        public ObservableCollection<Question> QuestionsInRandomOrder { 
+        public ObservableCollection<Question>? QuestionsInRandomOrder { 
             get => _questionsInRandomOrder;
             set
             {
@@ -76,7 +76,7 @@ namespace QuizConfigurator.ViewModel
                 RaisePropertyChanged();
             }
         }
-        public Question CurrentQuestion 
+        public Question? CurrentQuestion 
         {
             get => _currentQuestion;
             set
@@ -126,30 +126,36 @@ namespace QuizConfigurator.ViewModel
         {
             CurrentQuestionIndex++;
 
-            if (CurrentQuestionIndex - 1 < QuestionsInRandomOrder.Count)
+            if (ActivePack != null && QuestionsInRandomOrder != null)
             {
-                TimeLeft = ActivePack.TimeLimitInSeconds;
-                timer.Start();
-                CurrentQuestion = QuestionsInRandomOrder[CurrentQuestionIndex - 1];
-                SetAnswers();
-            }
-            else
-            {
-                timer.Stop();
-                IsGameOver = true;
-                IsPlaying = false;
+                if (CurrentQuestionIndex - 1 < QuestionsInRandomOrder.Count)
+                {
+                    TimeLeft = ActivePack.TimeLimitInSeconds;
+                    timer.Start();
+                    CurrentQuestion = QuestionsInRandomOrder[CurrentQuestionIndex - 1];
+                    SetAnswers();
+                }
+                else
+                {
+                    timer.Stop();
+                    IsGameOver = true;
+                    IsPlaying = false;
+                }
             }
         }
         private void SetAnswers()
         {
-            Random random = new Random();
-            var answers = new List<string> { CurrentQuestion.CorrectAnswer };
-            answers.AddRange(CurrentQuestion.IncorrectAnswers);
-            CurrentAnswers = new ObservableCollection<string>(answers.OrderBy(a => random.Next()).ToList());
+            if (CurrentQuestion != null && CurrentQuestion.CorrectAnswer != null && CurrentQuestion.IncorrectAnswers != null)
+            {
+                Random random = new Random();
+                var answers = new List<string> { CurrentQuestion.CorrectAnswer };
+                answers.AddRange(CurrentQuestion.IncorrectAnswers);
+                CurrentAnswers = new ObservableCollection<string>(answers.OrderBy(a => random.Next()).ToList());
+            }
         }
-        public void AnswerSelected(object selectedAnswer)
+        public void AnswerSelected(object? selectedAnswer)
         {
-            if (selectedAnswer is string answer)
+            if (selectedAnswer is string answer && CurrentQuestion != null)
             {
                 if (answer == CurrentQuestion.CorrectAnswer)
                 {

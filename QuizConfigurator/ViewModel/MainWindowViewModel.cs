@@ -2,6 +2,7 @@
 using QuizConfigurator.Dialogs;
 using QuizConfigurator.Model;
 using QuizConfigurator.Model.DataAccess;
+using QuizConfigurator.Services;
 using System.Collections.ObjectModel;
 using System.Security.AccessControl;
 

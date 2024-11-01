@@ -1,6 +1,6 @@
 ﻿using QuizConfigurator.ViewModel;
 
-namespace QuizConfigurator.Dialogs
+namespace QuizConfigurator.Services
 {
     internal interface IPackOptionsDialogService
     {

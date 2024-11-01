@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
-namespace QuizConfigurator.Dialogs
+namespace QuizConfigurator.Services
 {
     internal class CreatePackDialogService : ICreatePackDialogService
     {
@@ -19,7 +19,7 @@ namespace QuizConfigurator.Dialogs
         public Difficulty SetDifficulty { get; set; }
         public CreatePackDialogService()
         {
-            Difficulties = new((Difficulty[])System.Enum.GetValues(typeof(Difficulty)));
+            Difficulties = new((Difficulty[])Enum.GetValues(typeof(Difficulty)));
             SetDifficulty = Difficulty.Medium;
         }
         public QuestionPackViewModel? ShowDialog()
@@ -35,10 +35,10 @@ namespace QuizConfigurator.Dialogs
 
             if (result == true)
             {
-                newPack = (new QuestionPackViewModel(
+                newPack = new QuestionPackViewModel(
                             new QuestionPack(dialog.PackNameTextBox.Text,
                              SetDifficulty,
-                             (int)dialog.TimeLimitSlider.Value)));
+                             (int)dialog.TimeLimitSlider.Value));
             }
             return newPack;
         }

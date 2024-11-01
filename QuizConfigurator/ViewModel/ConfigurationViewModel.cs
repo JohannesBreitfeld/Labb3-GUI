@@ -1,6 +1,6 @@
 ﻿using QuizConfigurator.Command;
-using QuizConfigurator.Dialogs;
 using QuizConfigurator.Model;
+using QuizConfigurator.Services;
 
 namespace QuizConfigurator.ViewModel
 {

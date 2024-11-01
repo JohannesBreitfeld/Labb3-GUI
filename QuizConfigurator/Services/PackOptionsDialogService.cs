@@ -1,4 +1,5 @@
-﻿using QuizConfigurator.Enums;
+﻿using QuizConfigurator.Dialogs;
+using QuizConfigurator.Enums;
 using QuizConfigurator.Model;
 using QuizConfigurator.ViewModel;
 using System;
@@ -9,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuizConfigurator.Dialogs
+namespace QuizConfigurator.Services
 {
     internal class PackOptionsDialogService : IPackOptionsDialogService
     {
@@ -19,7 +20,7 @@ namespace QuizConfigurator.Dialogs
         public int TimeLimit { get; set; }
         public PackOptionsDialogService()
         {
-            Difficulties = new((Difficulty[])System.Enum.GetValues(typeof(Difficulty)));
+            Difficulties = new((Difficulty[])Enum.GetValues(typeof(Difficulty)));
         }
         public QuestionPackViewModel ShowDialog(QuestionPackViewModel activePack)
         {

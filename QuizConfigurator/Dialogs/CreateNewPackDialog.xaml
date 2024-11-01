@@ -8,10 +8,6 @@
         Title="New Question Pack" Height="240" Width="200"
         ResizeMode="NoResize">
 
-    <Window.DataContext>
-        <local:CreatePackDialogService/>
-    </Window.DataContext>
-
     <Grid>
         <StackPanel Margin="0 5 0 0">
             <Label Content="Pack Name:" FontWeight="Bold"/>

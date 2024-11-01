@@ -63,7 +63,7 @@ namespace QuizConfigurator.ViewModel
         public MainWindowViewModel(ICreatePackDialogService createPackDialogService)
         {
             PlayerViewModel = new PlayerViewModel(this);
-            ConfigurationViewModel = new ConfigurationViewModel(this, new PackOptionsDialogService());
+            ConfigurationViewModel = new ConfigurationViewModel(this, new PackOptionsDialogService(), new ImportQuestionsDialogService());
             SelectedViewModel = ConfigurationViewModel;
             QuestionPacksRepository = new QuestionPacksRepository();
             CreatePackDialogService = createPackDialogService;

@@ -19,7 +19,7 @@ namespace QuizConfigurator.Model.DataAccess
             
             if (File.Exists(FilePath))
             {
-                using FileStream openStream = File.OpenRead(FilePath);
+                await using FileStream openStream = File.OpenRead(FilePath);
                
                 packs =  await JsonSerializer.DeserializeAsync<ObservableCollection<QuestionPack>>(openStream);
             }

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace QuizConfigurator.Services
 {
-    internal class PackOptionsDialogService : IPackOptionsDialogService
+    internal class PackOptionsDialogService : IEditPackDialogService
     {
         public ObservableCollection<Difficulty> Difficulties { get; }
         public string? PackName { get; set; }

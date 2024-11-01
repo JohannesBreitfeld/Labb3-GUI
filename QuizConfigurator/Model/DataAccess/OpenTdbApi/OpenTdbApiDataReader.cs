@@ -18,7 +18,7 @@ namespace QuizConfigurator.Model.DataAccess.OpenTdbApi
             var response = await client.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadAsStringAsync(); ;
+                return await response.Content.ReadAsStringAsync(); 
             }
             else
             {

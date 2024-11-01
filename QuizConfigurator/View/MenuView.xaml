@@ -42,7 +42,8 @@
                       Command="{Binding DeletePackCommand}"/>
                 
                 <Separator/>
-                <MenuItem Header="_Import Questions" Icon="{fa:Icon CloudArrowDown}" InputGestureText="Ctrl + I"/>
+                <MenuItem Header="_Import Questions" Icon="{fa:Icon CloudArrowDown}" InputGestureText="Ctrl + I"
+                          Command="{Binding ConfigurationViewModel.ImportQuestionsCommand}"/>
                 <Separator/>
                 <MenuItem Header="_Save" Icon="{fa:Icon FloppyDisk}" 
                           InputGestureText="Ctrl + S" 

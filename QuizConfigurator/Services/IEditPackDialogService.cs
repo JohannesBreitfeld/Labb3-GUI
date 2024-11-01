@@ -2,7 +2,7 @@
 
 namespace QuizConfigurator.Services
 {
-    internal interface IPackOptionsDialogService
+    internal interface IEditPackDialogService
     {
         QuestionPackViewModel ShowDialog(QuestionPackViewModel activePack);
     }

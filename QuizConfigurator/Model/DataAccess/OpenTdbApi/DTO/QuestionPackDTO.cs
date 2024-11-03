@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace QuizConfigurator.Model.DataAccess.OpenTdbApi.DTO
 {
-    class Root
+    class QuestionPackDTO
     {
-        public int responseCode { get; set; }
+        public int? response_code { get; set; }
         public List<Result>? results { get; set; }
     }
 }

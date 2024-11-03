@@ -11,7 +11,7 @@ namespace QuizConfigurator.Model.DataAccess.OpenTdbApi
 {
     class ResultToQuestion
     {
-        public QuestionPackViewModel AddQuestionsToQuestionsPackViewModel(Root root, QuestionPackViewModel qp)
+        public QuestionPackViewModel AddQuestionsToQuestionsPackViewModel(QuestionPackDTO root, QuestionPackViewModel qp)
         { 
             if (root.results != null)
             {

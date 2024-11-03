@@ -8,16 +8,16 @@
         Title="Import Questions From Open Trivia DB" Height="250" Width="280"
         ResizeMode="NoResize">
     <Grid>
-        <StackPanel Margin="10 20 10 20">
+        <StackPanel Margin="10 10 10 0">
             <Label Content="Category:" FontWeight="Bold"/>
             <ComboBox ItemsSource="{Binding TriviaCategories}"
                    SelectedItem="{Binding TriviaCategoryChosen, Mode=TwoWay}"/>
 
             <Label Content="Difficulty:" FontWeight="Bold"/>
             <ComboBox ItemsSource="{Binding Difficulties}"
-                      SelectedItem="{Binding DifficultyChosen, Mode=TwoWay}"/>
+                      SelectedItem="{Binding DifficultyChosen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <StackPanel Orientation="Horizontal">
-                <Label Content="Number Of Questions:" FontWeight="Bold" Width="240"/>
+                <Label Content="Number Of Questions:" FontWeight="Bold" Width="225"/>
                 <Label Content="{Binding ElementName=NumberOfQuestionsSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             <Slider x:Name="NumberOfQuestionsSlider"

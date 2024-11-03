@@ -4,14 +4,8 @@ using QuizConfigurator.Model;
 using QuizConfigurator.Model.DataAccess.OpenTdbApi;
 using QuizConfigurator.Model.DataAccess.OpenTdbApi.DTO;
 using QuizConfigurator.ViewModel;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 
@@ -20,6 +14,9 @@ namespace QuizConfigurator.Services
     class ImportQuestionsDialogService : ViewModelBase, IImportQuestionsDialogService
     {
         private ObservableCollection<TriviaCategory>? _triviaCategories;
+        private int _numberOfQuestions;
+        private TriviaCategory? _triviaCategoryChosen;
+        private string? _difficultyChosen;
 
         public ObservableCollection<TriviaCategory>? TriviaCategories
         {
@@ -31,74 +28,83 @@ namespace QuizConfigurator.Services
             }
         }
         public ObservableCollection<string>? Difficulties { get; }
-        public int NumberOfQuestions { get; set; }
-        public TriviaCategory TriviaCategoryChosen { get; set; }
-        public string DifficultyChosen { get; set; }
 
+        public int NumberOfQuestions
+        {
+            get => _numberOfQuestions;
+            set
+            {
+                _numberOfQuestions = value;
+                RaisePropertyChanged();
+            }
+        }
+        public TriviaCategory? TriviaCategoryChosen
+        {
+            get => _triviaCategoryChosen;
+            set
+            {
+                _triviaCategoryChosen = value;
+                RaisePropertyChanged();
+            }
+        }
+        public string? DifficultyChosen
+        {
+            get => _difficultyChosen;
+            set
+            {
+                _difficultyChosen = value;
+                RaisePropertyChanged();
+            }
+        }
 
         public ImportQuestionsDialogService()
         {
             Difficulties = new((string[])Enum.GetNames(typeof(Difficulty)));
         }
 
-        private async Task<ObservableCollection<TriviaCategory>>? GetTriviaCategories()
-        {
-            string url = "https://opentdb.com/api_category.php";
-
-            using HttpClient client = new();
-            var response = await client.GetAsync(url);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var json = await response.Content.ReadAsStringAsync();
-
-                TriviaCategories? triviaCategories = JsonSerializer.Deserialize<TriviaCategories>(json);
-
-                return triviaCategories != null
-                    ? triviaCategories.Trivia_categories
-                    : null;
-            }
-            return null;
-        }
-
         public async Task<QuestionPackViewModel> ShowDialog(QuestionPackViewModel activePack)
         {
-            var dialog = new ImportQuestionsDialog()
-            {
-                DataContext = this
-            };
-            TriviaCategories = await GetTriviaCategories();
-            bool? result = null;
+            var dialog = new ImportQuestionsDialog() { DataContext = this };
 
+            TriviaCategories = await new TriviaCategoryGetter().Get();
+       
             if (TriviaCategories != null)
             {
                 TriviaCategoryChosen = TriviaCategories.FirstOrDefault();
                 NumberOfQuestions = 10;
-                result = dialog.ShowDialog();
-                
+                DifficultyChosen = nameof(Difficulty.Medium);
+
+                var result = dialog.ShowDialog();
+
+                if (result == true)
+                {
+                    var statusMessage = new Dictionary<int, string>
+                    {
+                        { 0, "Success: Returned results successfully." },
+                        { 1, "No Results: The API doesn't have enough questions for your query." },
+                        { 2, "Invalid Parameter: Contains an invalid parameter." },
+                        { 3, "Token Not Found: Session Token does not exist." },
+                        { 4, "Token Empty: Session Token has returned all possible questions." },
+                        { 5, "Rate Limit: Too many requests have occurred." }
+                    };
+             
+                    OpenTdbApiDataReader openTdbApiDataReader = new();
+                    var json = await openTdbApiDataReader.GetJsonAsString(NumberOfQuestions, TriviaCategoryChosen.id, DifficultyChosen.ToLower());
+
+                    var options = new JsonSerializerOptions
+                    {
+                        Converters = { new HtmlDecodeConverter() }
+                    };
+                    QuestionPackDTO? QuestionPackDTO = JsonSerializer.Deserialize<QuestionPackDTO>(json, options);
+
+                    ResultToQuestion resultToQuestion = new();
+                    resultToQuestion.AddQuestionsToQuestionsPackViewModel(QuestionPackDTO, activePack);
+                }
             }
             else
             {
                 System.Windows.MessageBox.Show("Failed to receive trivia categories from Open Trivia Database", "Error Occurred", MessageBoxButton.OK);
             }
-
-            if (result == true)
-            {
-                OpenTdbApiDataReader openTdbApiDataReader = new();
-                var call = openTdbApiDataReader.GetJsonAsString(NumberOfQuestions, TriviaCategoryChosen.Id, DifficultyChosen);
-
-
-                var json = await call;
-                Root? root = JsonSerializer.Deserialize<Root>(json);
-                ResultToQuestion resultToQuestion = new();
-                resultToQuestion.AddQuestionsToQuestionsPackViewModel(root, activePack);
-            }
-
-
-
-
-
-
 
             return activePack;
         }

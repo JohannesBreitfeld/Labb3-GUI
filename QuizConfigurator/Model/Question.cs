@@ -22,11 +22,11 @@ namespace QuizConfigurator.Model
         
         public static explicit operator Question(Result questionDto)
         {
-            string? query = questionDto.question;
-            string? correctAnswer = questionDto.correctAnswer;
-            string? incorrectAnswer1 = questionDto.incorrectAnswers[0];
-            string? incorrectAnswer2 = questionDto.incorrectAnswers[1];
-            string? incorrectAnswer3 = questionDto.incorrectAnswers[2];
+            string? query = questionDto.Question;
+            string? correctAnswer = questionDto.CorrectAnswer;
+            string? incorrectAnswer1 = questionDto.IncorrectAnswers[0];
+            string? incorrectAnswer2 = questionDto.IncorrectAnswers[1];
+            string? incorrectAnswer3 = questionDto.IncorrectAnswers[2];
 
             return new Question(query, correctAnswer, incorrectAnswer1, incorrectAnswer2, incorrectAnswer3);
         }

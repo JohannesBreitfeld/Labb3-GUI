@@ -9,7 +9,7 @@ namespace QuizConfigurator.Model.DataAccess.OpenTdbApi.DTO
 {
     class QuestionPackDTO
     {
-        public int? response_code { get; set; }
+        public int response_code { get; set; }
         public List<Result>? results { get; set; }
     }
 }

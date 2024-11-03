@@ -46,5 +46,9 @@ namespace QuizConfigurator.ViewModel
         }
         public ObservableCollection<Question> Questions { get; }
 
+        public override string ToString()
+        {
+            return $"{Name}  ({Difficulty})";
+        }
     }
 }

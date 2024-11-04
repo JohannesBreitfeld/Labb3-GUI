@@ -35,5 +35,6 @@ namespace QuizConfigurator.Dialogs
             DialogResult = true;
             this.Close();
         }
+
     }
 }

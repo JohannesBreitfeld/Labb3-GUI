@@ -24,6 +24,11 @@ namespace QuizConfigurator.ViewModel
                 RaisePropertyChanged();
                 SetConfigurationViewCommand?.RaiseCanExecuteChanged();
                 SetPlayerViewCommand?.RaiseCanExecuteChanged();
+                ConfigurationViewModel?.OpenPackOptionsCommand?.RaiseCanExecuteChanged();
+                ConfigurationViewModel?.AddQuestionCommand?.RaiseCanExecuteChanged();
+                ConfigurationViewModel?.ImportQuestionsCommand?.RaiseCanExecuteChanged();
+                SetActivePackCommand?.RaiseCanExecuteChanged();
+                OpenCreatePackCommand?.RaiseCanExecuteChanged();
             }
         }    
         public PlayerViewModel? PlayerViewModel { get; }
@@ -67,27 +72,21 @@ namespace QuizConfigurator.ViewModel
             SelectedViewModel = ConfigurationViewModel;
             QuestionPacksRepository = new QuestionPacksRepository();
             CreatePackDialogService = createPackDialogService;
-            OpenCreatePackCommand = new(OpenCreatePackDialog);
-            SetActivePackCommand = new(SetActivePack);
+            OpenCreatePackCommand = new(OpenCreatePackDialog, (object? _) => SelectedViewModel == ConfigurationViewModel);
+            SetActivePackCommand = new(SetActivePack, (object? _)=> SelectedViewModel == ConfigurationViewModel);
             DeletePackCommand = new(DeletePack, CanDeletePack);
             SaveCommand = new(Save);
             ExitAppCommand = new(ExitApp);
             ToggleFullscreenCommand = new(ToggleFullscreen);
 
-            SetConfigurationViewCommand = new(_selectedViewModel => SelectedViewModel = ConfigurationViewModel, 
-                                              _selectedViewModel => SelectedViewModel != ConfigurationViewModel);
-
-            SetPlayerViewCommand = new(_selectedViewModel => SelectedViewModel = PlayerViewModel,
-                                       _selectedViewModel => SelectedViewModel != PlayerViewModel);
+            SetConfigurationViewCommand = new((object _) => SelectedViewModel = ConfigurationViewModel, 
+                                              (object? _) => SelectedViewModel != ConfigurationViewModel);
+            SetPlayerViewCommand = new((object _) => SelectedViewModel = PlayerViewModel,
+                                       (object? _) => SelectedViewModel != PlayerViewModel);
             Packs = [];
             
             Load();
            }
-
-        private void ToggleFullscreen(object obj)
-        {
-            IsFullscreen = !IsFullscreen;
-        }
 
         public DelegateCommand SetPlayerViewCommand { get; }
         public DelegateCommand SetConfigurationViewCommand { get; }
@@ -98,6 +97,10 @@ namespace QuizConfigurator.ViewModel
         public DelegateCommand ExitAppCommand { get; }
         public DelegateCommand ToggleFullscreenCommand { get; }
 
+        private void ToggleFullscreen(object obj)
+        {
+            IsFullscreen = !IsFullscreen;
+        }
 
         private void SetActivePack(object? obj)
         {
@@ -133,7 +136,6 @@ namespace QuizConfigurator.ViewModel
                     Packs?.Add(new QuestionPackViewModel(pack));
                 }
             }
-
             ActivePack = Packs?.FirstOrDefault();
         }
  

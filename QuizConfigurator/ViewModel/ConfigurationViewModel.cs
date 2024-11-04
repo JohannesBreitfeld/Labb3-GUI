@@ -12,17 +12,22 @@ namespace QuizConfigurator.ViewModel
         {
             this.mainWindowViewModel = mainWindowViewModel;
        
-            AddQuestionCommand = new (AddQuestion);
+            AddQuestionCommand = new (AddQuestion, CanExecute);
             DeleteQuestionCommand = new(DeleteQuestion, (_activeQuestion) => ActiveQuestion != null);
-            ImportQuestionsCommand = new(ImportQuestion);
-            OpenPackOptionsCommand = new(OpenPackOptionsDialog);
+            ImportQuestionsCommand = new(ImportQuestion, CanExecute);
+            OpenPackOptionsCommand = new(OpenPackOptionsDialog, CanExecute);
             PackOptionsDialogService = packOptionsDialogService;
             ImportQuestionsDialogService = importQuestionsDialogService;
         }
 
+        public bool CanExecute(object? arg)
+        {
+            return mainWindowViewModel?.SelectedViewModel == mainWindowViewModel?.ConfigurationViewModel;
+        }
+
+        private Question? _activeQuestion;
         private readonly MainWindowViewModel? mainWindowViewModel;
         public QuestionPackViewModel? ActivePack => mainWindowViewModel?.ActivePack; 
-        private Question? _activeQuestion;
         public Question? ActiveQuestion
         {
             get => _activeQuestion;

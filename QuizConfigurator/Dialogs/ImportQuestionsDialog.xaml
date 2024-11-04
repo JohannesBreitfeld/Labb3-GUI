@@ -7,8 +7,7 @@
         mc:Ignorable="d"
         Title="Import Questions From Open Trivia DB" Height="250" Width="280"
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen"
-        Topmost="True">
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <StackPanel Margin="10 10 10 0">
             <Label Content="Category:" FontWeight="Bold"/>

@@ -13,13 +13,13 @@ namespace QuizConfigurator.Services
 {
     class ImportQuestionsDialogService : ViewModelBase, IImportQuestionsDialogService
     {
-        private ObservableCollection<TriviaCategory>? _triviaCategories;
+        private ObservableCollection<TriviaCategory?>? _triviaCategories;
         private int _numberOfQuestions;
         private TriviaCategory? _triviaCategoryChosen;
         private string? _difficultyChosen;
         private string? _statusMessage;
 
-        public ObservableCollection<TriviaCategory>? TriviaCategories
+        public ObservableCollection<TriviaCategory?>? TriviaCategories
         {
             get => _triviaCategories;
             set
@@ -29,7 +29,6 @@ namespace QuizConfigurator.Services
             }
         }
         public ObservableCollection<string>? Difficulties { get; }
-
         public int NumberOfQuestions
         {
             get => _numberOfQuestions;
@@ -85,49 +84,50 @@ namespace QuizConfigurator.Services
         public async Task<QuestionPackViewModel> ShowDialog(QuestionPackViewModel activePack)
         {
             var dialog = new ImportQuestionsDialog() { DataContext = this };
+                                   
+            NumberOfQuestions = 10;
+            DifficultyChosen = nameof(Difficulty.Medium);
 
             TriviaCategories = await new TriviaCategoryGetter().Get();
-
+            TriviaCategoryChosen = TriviaCategories.FirstOrDefault();
+            
             if (TriviaCategories == null)
             {
                 System.Windows.MessageBox.Show("Failed to receive trivia categories from Open Trivia Database", "Error Occurred", MessageBoxButton.OK);
                 return activePack;
             }
-                
-            TriviaCategoryChosen = TriviaCategories.FirstOrDefault();
-            NumberOfQuestions = 10;
-            DifficultyChosen = nameof(Difficulty.Medium);
-
-            var result = dialog.ShowDialog();
-
-            if (result == true)
+            else
             {
-                var statusWindow = new ApiStatusDialog() { DataContext = this };
-                StatusMessage = "Waiting for Open Trivia Database";
-                statusWindow.Show();
+                var result = dialog.ShowDialog();
 
-                OpenTdbApiDataReader openTdbApiDataReader = new();
-                var json = await openTdbApiDataReader.GetJsonAsString(NumberOfQuestions, TriviaCategoryChosen.id, DifficultyChosen.ToLower());
-
-                var options = new JsonSerializerOptions
+                if (result == true)
                 {
-                    Converters = { new HtmlDecodeConverter() }
-                };
-                QuestionPackDTO? questionPackDTO = JsonSerializer.Deserialize<QuestionPackDTO>(json, options);
+                    var statusWindow = new ApiStatusDialog() { DataContext = this };
+                    StatusMessage = "Waiting for Open Trivia Database";
+                    statusWindow.Show();
 
-                if (questionPackDTO != null && statusMessages.TryGetValue(questionPackDTO.response_code, out string? message))
-                {
-                    StatusMessage = message;
+                    OpenTdbApiDataReader openTdbApiDataReader = new();
+                    var json = await openTdbApiDataReader.GetJsonAsString(NumberOfQuestions, TriviaCategoryChosen.id, DifficultyChosen.ToLower());
+
+                    var options = new JsonSerializerOptions
+                    {
+                        Converters = { new HtmlDecodeConverter() }
+                    };
+                    QuestionPackDTO? questionPackDTO = JsonSerializer.Deserialize<QuestionPackDTO>(json, options);
+
+                    if (questionPackDTO != null && statusMessages.TryGetValue(questionPackDTO.response_code, out string? message))
+                    {
+                        StatusMessage = message;
+                    }
+                    else
+                    {
+                        StatusMessage = "Unknown error occurred.";
+                    }
+
+                    ResultToQuestion resultToQuestion = new();
+                    resultToQuestion.AddQuestionsToQuestionsPackViewModel(questionPackDTO, activePack);
                 }
-                else
-                {
-                    StatusMessage = "Unknown error occurred.";
-                }
-
-                ResultToQuestion resultToQuestion = new();
-                resultToQuestion.AddQuestionsToQuestionsPackViewModel(questionPackDTO, activePack);
             }
-      
             return activePack;
         }
     }

@@ -20,6 +20,7 @@ namespace QuizConfigurator.ViewModel
         private ObservableCollection<Question>? _questionsInRandomOrder;
         private readonly MainWindowViewModel? mainWindowViewModel;
         private ObservableCollection<ButtonColor>? _buttonColors;
+        private bool _buttonsEnabled;
 
         public int Score 
         {
@@ -105,6 +106,15 @@ namespace QuizConfigurator.ViewModel
                 RaisePropertyChanged();
             }
         }
+        public bool ButtonsEnabled 
+        {
+            get => _buttonsEnabled;
+            set
+            {
+                _buttonsEnabled = value;
+                RaisePropertyChanged();
+            }
+        }
 
         public PlayerViewModel(MainWindowViewModel? mainWindowViewModel)
         {
@@ -142,13 +152,14 @@ namespace QuizConfigurator.ViewModel
         private void ShowNextQuestion()
         {
             CurrentQuestionIndex++;
-
+            
             if (ActivePack != null && QuestionsInRandomOrder != null)
             {
                 if (CurrentQuestionIndex - 1 < QuestionsInRandomOrder.Count)
                 {
                     TimeLeft = ActivePack.TimeLimitInSeconds;
                     timer.Start();
+                    ButtonsEnabled = true;
                     CurrentQuestion = QuestionsInRandomOrder[CurrentQuestionIndex - 1];
                     SetAnswers();
                 }
@@ -190,6 +201,8 @@ namespace QuizConfigurator.ViewModel
                     UpdateButtonColors(answer, false);
                 }
                 timer.Stop();
+                
+                ButtonsEnabled = false;
                 await Task.Delay(2000);
             }
             ShowNextQuestion();

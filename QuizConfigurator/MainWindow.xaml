@@ -8,7 +8,8 @@
         xmlns:viewmodel="clr-namespace:QuizConfigurator.ViewModel"
         xmlns:converters="clr-namespace:QuizConfigurator.Converters"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" MinHeight="450" MinWidth="700">
+        Title="MainWindow" Height="450" Width="800" MinHeight="450" MinWidth="700"
+        WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <converters:BoolToWindowStyleConverter x:Key="BoolToWindowStyleConverter"/>
@@ -29,8 +30,8 @@
 
     <Window.InputBindings>
         <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding SaveCommand}"/>
+        <KeyBinding Key="I" Modifiers="Ctrl" Command="{Binding ConfigurationViewModel.ImportQuestionsCommand}"/>
         <KeyBinding Key="F4" Modifiers="Alt" Command="{Binding ExitCommand}"/>
-        <!--import binding-->
         <KeyBinding Key="Insert" Command="{Binding ConfigurationViewModel.AddQuestionCommand}"/>
         <KeyBinding Key="Delete" Command="{Binding ConfigurationViewModel.DeleteQuestionCommand}"/>
         <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding ConfigurationViewModel.OpenPackOptionsCommand}"/>

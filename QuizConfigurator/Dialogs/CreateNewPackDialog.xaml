@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:QuizConfigurator.Dialogs"
         mc:Ignorable="d"
         Title="New Question Pack" Height="240" Width="200"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
 
     <Grid>
         <StackPanel Margin="0 5 0 0">
@@ -40,11 +41,11 @@
                     IsSnapToTickEnabled="True"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 20 0 0">
-                <Button Content="Create" 
+                <Button Content="C_reate" 
                         Width="60" 
                         Margin="0 0 10 0"
                         Click="Button_ClickCreate"/>
-                <Button Content="Cancel" Width="60" Click="Button_ClickCancel"/>
+                <Button Content="_Cancel" Width="60" Click="Button_ClickCancel"/>
             </StackPanel>
         </StackPanel>
     </Grid>

@@ -5,14 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:QuizConfigurator.Dialogs"
         mc:Ignorable="d"
-        Title="Import status" Height="150" Width="400">
+        Title="Import status" Height="150" Width="400"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock TextWrapping="Wrap"  
                        TextAlignment="Center" 
                        Text="{Binding StatusMessage}"
                        Margin="20"/>
-            <Button Content="OK" Padding="5" Width="75" Click="Button_Click"/>
+            <Button Content="_OK" Padding="5" Width="75" Click="Button_Click"/>
         </StackPanel>
     </Grid>
 </Window>

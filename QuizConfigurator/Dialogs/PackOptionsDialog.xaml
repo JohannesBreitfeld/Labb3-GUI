@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:QuizConfigurator.Dialogs"
         mc:Ignorable="d"
         Title="Pack Options" Height="240" Width="200"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
 
     <Grid>
         <StackPanel Margin="0 5 0 0">
@@ -34,8 +35,8 @@
                     Value="{Binding TimeLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     IsSnapToTickEnabled="True"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 20 0 0">
-                <Button Content="Apply" Width="60" Margin="0 0 10 0" Click="Button_Click_Apply"/>
-                <Button Content="Cancel" Width="60" Click="Button_Click_Cancel"/>
+                <Button Content="_Apply" Width="60" Margin="0 0 10 0" Click="Button_Click_Apply"/>
+                <Button Content="_Cancel" Width="60" Click="Button_Click_Cancel"/>
             </StackPanel>
         </StackPanel>
     </Grid>

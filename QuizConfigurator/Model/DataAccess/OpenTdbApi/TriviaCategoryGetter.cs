@@ -7,22 +7,28 @@ namespace QuizConfigurator.Model.DataAccess.OpenTdbApi
 {
     class TriviaCategoryGetter
     {
-        public async Task<ObservableCollection<TriviaCategory>>? Get()
+        public async Task<ObservableCollection<TriviaCategory?>>? Get()
         {
             string url = "https://opentdb.com/api_category.php";
 
             using HttpClient client = new();
-            var response = await client.GetAsync(url);
-
-            if (response.IsSuccessStatusCode)
+            
+            try
             {
-                var json = await response.Content.ReadAsStringAsync();
+                var response = await client.GetAsync(url);
 
-                TriviaCategories? triviaCategories = JsonSerializer.Deserialize<TriviaCategories>(json);
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
 
-                return triviaCategories != null
-                    ? triviaCategories.trivia_categories
-                    : null;
+                    TriviaCategories? triviaCategories = JsonSerializer.Deserialize<TriviaCategories>(json);
+
+                    return triviaCategories?.trivia_categories;
+                }
+            }
+            catch 
+            {
+                return null;
             }
             return null;
         }

@@ -6,12 +6,14 @@
         xmlns:local="clr-namespace:QuizConfigurator.Dialogs"
         mc:Ignorable="d"
         Title="Import Questions From Open Trivia DB" Height="250" Width="280"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Topmost="True">
     <Grid>
         <StackPanel Margin="10 10 10 0">
             <Label Content="Category:" FontWeight="Bold"/>
             <ComboBox ItemsSource="{Binding TriviaCategories}"
-                   SelectedItem="{Binding TriviaCategoryChosen, Mode=TwoWay}"/>
+                      SelectedItem="{Binding TriviaCategoryChosen, Mode=TwoWay}"/>
 
             <Label Content="Difficulty:" FontWeight="Bold"/>
             <ComboBox ItemsSource="{Binding Difficulties}"
@@ -28,8 +30,8 @@
                     IsSnapToTickEnabled="True"
                     Value="{Binding NumberOfQuestions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Content="Import" Margin="15" Padding="5" Click="Button_Click"/>
-                <Button Content="Cancel" Margin="15" Padding="5" Click="Cancel_Button_Click"/>
+                <Button Content="_Import" Margin="15" Padding="5" Click="Button_Click"/>
+                <Button Content="_Cancel" Margin="15" Padding="5" Click="Cancel_Button_Click"/>
             </StackPanel>
         </StackPanel>
     </Grid>

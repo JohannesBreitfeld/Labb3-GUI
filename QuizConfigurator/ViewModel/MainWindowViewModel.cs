@@ -5,6 +5,7 @@ using QuizConfigurator.Model.DataAccess;
 using QuizConfigurator.Services;
 using System.Collections.ObjectModel;
 using System.Security.AccessControl;
+using System.Windows;
 
 namespace QuizConfigurator.ViewModel
 {
@@ -72,13 +73,15 @@ namespace QuizConfigurator.ViewModel
             SelectedViewModel = ConfigurationViewModel;
             QuestionPacksRepository = new QuestionPacksRepository();
             CreatePackDialogService = createPackDialogService;
-            OpenCreatePackCommand = new(OpenCreatePackDialog, (object? _) => SelectedViewModel == ConfigurationViewModel);
-            SetActivePackCommand = new(SetActivePack, (object? _)=> SelectedViewModel == ConfigurationViewModel);
-            DeletePackCommand = new(DeletePack, CanDeletePack);
+            OpenCreatePackCommand = new(OpenCreatePackDialog, 
+                                        (object? _) => SelectedViewModel == ConfigurationViewModel);
+            SetActivePackCommand = new(SetActivePack, 
+                                       (object? _)=> SelectedViewModel == ConfigurationViewModel);
+            DeletePackCommand = new(DeletePack, 
+                                    (object? _) => Packs?.Count > 1);
             SaveCommand = new(Save);
             ExitAppCommand = new(ExitApp);
-            ToggleFullscreenCommand = new(ToggleFullscreen);
-
+            ToggleFullscreenCommand = new((object _) => IsFullscreen = !IsFullscreen);
             SetConfigurationViewCommand = new((object _) => SelectedViewModel = ConfigurationViewModel, 
                                               (object? _) => SelectedViewModel != ConfigurationViewModel);
             SetPlayerViewCommand = new((object _) => SelectedViewModel = PlayerViewModel,
@@ -96,11 +99,6 @@ namespace QuizConfigurator.ViewModel
         public DelegateCommand SaveCommand { get; }
         public DelegateCommand ExitAppCommand { get; }
         public DelegateCommand ToggleFullscreenCommand { get; }
-
-        private void ToggleFullscreen(object obj)
-        {
-            IsFullscreen = !IsFullscreen;
-        }
 
         private void SetActivePack(object? obj)
         {
@@ -147,18 +145,18 @@ namespace QuizConfigurator.ViewModel
             }
         }
 
-        private bool CanDeletePack(object? arg)
-        {
-            return Packs?.Count > 1;
-        }
-
         private void DeletePack(object? obj)
         {
             if (ActivePack != null)
             {
-                Packs?.Remove(ActivePack);
-                ActivePack = Packs?.FirstOrDefault();
-                DeletePackCommand.RaiseCanExecuteChanged();
+                var confirmationWindow =  MessageBox.Show($"Are you sure you want to delete '{ActivePack}'?", "Delete question pack?", MessageBoxButton.YesNo);
+
+                if (confirmationWindow == MessageBoxResult.Yes)
+                {
+                    Packs?.Remove(ActivePack);
+                    ActivePack = Packs?.FirstOrDefault();
+                    DeletePackCommand.RaiseCanExecuteChanged();
+                }
             }
         }
 

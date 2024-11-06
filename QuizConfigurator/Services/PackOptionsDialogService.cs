@@ -22,6 +22,7 @@ namespace QuizConfigurator.Services
         {
             Difficulties = new((Difficulty[])Enum.GetValues(typeof(Difficulty)));
         }
+        
         public QuestionPackViewModel ShowDialog(QuestionPackViewModel activePack)
         {
             PackName = activePack.Name;

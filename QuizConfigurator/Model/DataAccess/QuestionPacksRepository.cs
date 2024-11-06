@@ -30,7 +30,6 @@ namespace QuizConfigurator.Model.DataAccess
         {
             await using FileStream createStream = File.Create(FilePath);
             await JsonSerializer.SerializeAsync(createStream, packs);
-
         }
     }
 }

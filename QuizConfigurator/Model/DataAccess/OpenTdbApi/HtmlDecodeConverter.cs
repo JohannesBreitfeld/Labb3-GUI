@@ -7,7 +7,7 @@ public class HtmlDecodeConverter : JsonConverter<string>
 {
     public override string Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        string rawValue = reader.GetString();
+        string? rawValue = reader.GetString();
 
         return CustomHtmlDecode(rawValue);
     }

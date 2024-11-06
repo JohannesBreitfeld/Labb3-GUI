@@ -14,7 +14,7 @@
                        TextAlignment="Center" 
                        Text="{Binding StatusMessage}"
                        Margin="20"/>
-            <Button Content="_OK" Padding="5" Width="75" Click="Button_Click"/>
+            <Button Content="_OK" Padding="5" Width="60" Click="Button_Click"/>
         </StackPanel>
     </Grid>
 </Window>

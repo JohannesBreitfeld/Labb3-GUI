@@ -13,7 +13,7 @@
         <StackPanel Margin="0 5 0 0">
             <Label Content="Pack Name:" FontWeight="Bold"/>
             <TextBox x:Name="PackNameTextBox" 
-                     Text="&lt;Pack Name&gt;"
+                     Text="{Binding PackName, Mode=TwoWay}"
                      Margin="5 0 5 0"/>
             
             <Label Content="Difficulty:" FontWeight="Bold"/>
@@ -36,16 +36,16 @@
                     TickFrequency="5"
                     Minimum="5"
                     Maximum="120"
-                    Value="30"
-                    SelectionStart="30"
-                    IsSnapToTickEnabled="True"/>
+                    IsSnapToTickEnabled="True"
+                    Value="{Binding TimeLimit, Mode=TwoWay}"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 20 0 0">
                 <Button Content="C_reate" 
                         Width="60" 
-                        Margin="0 0 10 0"
+                        Margin="0 0 20 0"
+                        Padding="5"
                         Click="Button_ClickCreate"/>
-                <Button Content="_Cancel" Width="60" Click="Button_ClickCancel"/>
+                <Button Content="_Cancel" Width="60" Padding="5" Click="Button_ClickCancel"/>
             </StackPanel>
         </StackPanel>
     </Grid>

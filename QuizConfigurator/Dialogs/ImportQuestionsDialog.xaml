@@ -17,10 +17,14 @@
             <Label Content="Difficulty:" FontWeight="Bold"/>
             <ComboBox ItemsSource="{Binding Difficulties}"
                       SelectedItem="{Binding DifficultyChosen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <StackPanel Orientation="Horizontal">
+                
+            <StackPanel Orientation="Horizontal">
                 <Label Content="Number Of Questions:" FontWeight="Bold" Width="225"/>
-                <Label Content="{Binding ElementName=NumberOfQuestionsSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Content="{Binding ElementName=NumberOfQuestionsSlider, 
+                                Path=Value, 
+                                UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
+            
             <Slider x:Name="NumberOfQuestionsSlider"
                     Minimum="1"
                     Maximum="20"
@@ -28,9 +32,12 @@
                     TickPlacement="BottomRight"
                     IsSnapToTickEnabled="True"
                     Value="{Binding NumberOfQuestions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 20 0 0">
+                
                 <Button Content="_Import" Width="60" Margin="0 0 20 0" Padding="5" Click="Button_Click"/>
                 <Button Content="_Cancel" Width="60" Padding="5" Click="Cancel_Button_Click"/>
+                
             </StackPanel>
         </StackPanel>
     </Grid>

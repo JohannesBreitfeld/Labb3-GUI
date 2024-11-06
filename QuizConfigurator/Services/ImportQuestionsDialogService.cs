@@ -7,7 +7,6 @@ using QuizConfigurator.ViewModel;
 using System.Collections.ObjectModel;
 using System.Text.Json;
 using System.Windows;
-using System.Windows.Forms;
 
 namespace QuizConfigurator.Services
 {
@@ -83,16 +82,20 @@ namespace QuizConfigurator.Services
         public async Task<QuestionPackViewModel> ShowDialog(QuestionPackViewModel activePack)
         {
             var dialog = new ImportQuestionsDialog() { DataContext = this };
-                                   
+            var loadingWindow = new ApiStatusDialog() { DataContext = this };
+            StatusMessage = "Loading categories from Open Trivia Database";
+            loadingWindow.Show();
+            
             NumberOfQuestions = 10;
             DifficultyChosen = nameof(Difficulty.Medium);
 
             TriviaCategories = await new TriviaCategoryGetter().Get();
+            loadingWindow.Close();
             TriviaCategoryChosen = TriviaCategories.FirstOrDefault();
             
             if (TriviaCategories == null)
             {
-                System.Windows.MessageBox.Show("Failed to receive trivia categories from Open Trivia Database", "Error Occurred", MessageBoxButton.OK);
+                MessageBox.Show("Failed to receive trivia categories from Open Trivia Database", "Error Occurred", MessageBoxButton.OK);
             }
             else
             {
@@ -100,37 +103,42 @@ namespace QuizConfigurator.Services
 
                 if (result == true)
                 {
-                    var statusWindow = new ApiStatusDialog() { DataContext = this };
-                    StatusMessage = "Waiting for Open Trivia Database";
-                    statusWindow.Show();
-
-                    OpenTdbApiDataReader openTdbApiDataReader = new();
-                    var json = await openTdbApiDataReader.GetJsonAsString(NumberOfQuestions, TriviaCategoryChosen.id, DifficultyChosen.ToLower());
-
-                    if (json == string.Empty)
-                    {
-                        StatusMessage = "Error occured while retrieving the quiestions from Open Trivia Database";
-                    }
-                    else
-                    {
-                        var options = new JsonSerializerOptions { Converters = { new HtmlDecodeConverter() }};
-                        QuestionPackDTO? questionPackDTO = JsonSerializer.Deserialize<QuestionPackDTO>(json, options);
-
-                        if (questionPackDTO != null && statusMessages.TryGetValue(questionPackDTO.response_code, out string? message))
-                        {
-                            StatusMessage = message;
-                        }
-                        else
-                        {
-                            StatusMessage = "Unknown error occurred.";
-                        }
-
-                        ResultToQuestion resultToQuestion = new();
-                        resultToQuestion.AddQuestionsToQuestionsPackViewModel(questionPackDTO, activePack);
-                    }
+                    await RelayAndReciveInformationFromOTDB(activePack);
                 }
             }
             return activePack;
+        }
+
+        private async Task RelayAndReciveInformationFromOTDB(QuestionPackViewModel activePack)
+        {
+            var statusWindow = new ApiStatusDialog() { DataContext = this };
+            StatusMessage = "Waiting for Open Trivia Database";
+            statusWindow.Show();
+
+            OpenTdbApiDataReader openTdbApiDataReader = new();
+            var json = await openTdbApiDataReader.GetJsonAsString(NumberOfQuestions, TriviaCategoryChosen.id, DifficultyChosen.ToLower());
+
+            if (json == string.Empty)
+            {
+                StatusMessage = "Error occured while retrieving the quiestions from Open Trivia Database";
+            }
+            else
+            {
+                var options = new JsonSerializerOptions { Converters = { new HtmlDecodeConverter() } };
+                QuestionPackDTO? questionPackDTO = JsonSerializer.Deserialize<QuestionPackDTO>(json, options);
+
+                if (questionPackDTO != null && statusMessages.TryGetValue(questionPackDTO.response_code, out string? message))
+                {
+                    StatusMessage = message;
+                }
+                else
+                {
+                    StatusMessage = "Unknown error occurred.";
+                }
+
+                ResultToQuestion resultToQuestion = new();
+                resultToQuestion.AddQuestionsToQuestionsPackViewModel(questionPackDTO, activePack);
+            }
         }
     }
 }

@@ -7,9 +7,11 @@
         xmlns:view="clr-namespace:QuizConfigurator.View"
         xmlns:viewmodel="clr-namespace:QuizConfigurator.ViewModel"
         xmlns:converters="clr-namespace:QuizConfigurator.Converters"
+        xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" MinHeight="450" MinWidth="700"
-        WindowStartupLocation="CenterScreen">
+        Title="Quiz App" Height="450" Width="800" MinHeight="450" MinWidth="700"
+        WindowStartupLocation="CenterScreen"
+        Icon="{fa:IconSource Icons}">
 
     <Window.Resources>
         <converters:BoolToWindowStyleConverter x:Key="BoolToWindowStyleConverter"/>

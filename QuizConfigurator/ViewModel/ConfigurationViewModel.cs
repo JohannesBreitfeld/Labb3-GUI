@@ -42,11 +42,8 @@ namespace QuizConfigurator.ViewModel
         public DelegateCommand ImportQuestionsCommand { get; }
         public DelegateCommand OpenPackOptionsCommand { get; }
 
-        public bool CanExecute(object? arg)
-        {
-            return mainWindowViewModel?.SelectedViewModel == mainWindowViewModel?.ConfigurationViewModel;
-        }
-
+        public bool CanExecute(object? arg) => mainWindowViewModel?.SelectedViewModel == mainWindowViewModel?.ConfigurationViewModel;
+    
         private void AddQuestion(object obj)
         {
             ActiveQuestion = new Question("New question", "Correct Answer", "First Incorrect Answer", "Second Incorrect Answer", "Third Incorrect Answer");

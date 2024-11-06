@@ -15,7 +15,6 @@ namespace QuizConfigurator.ViewModel
         }
         private readonly QuestionPack model;
 
-
         public string Name
         {
             get => model.Name;

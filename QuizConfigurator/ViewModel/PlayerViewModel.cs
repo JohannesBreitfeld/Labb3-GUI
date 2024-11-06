@@ -9,7 +9,6 @@ namespace QuizConfigurator.ViewModel
 {
     internal class PlayerViewModel : ViewModelBase
     {
-        private DispatcherTimer timer;
         private Question? _currentQuestion;
         private int _currentQuestionIndex;
         private int _timeLeft;
@@ -18,9 +17,10 @@ namespace QuizConfigurator.ViewModel
         private bool _isGameOver;
         private ObservableCollection<string>? _currentAnswers;
         private ObservableCollection<Question>? _questionsInRandomOrder;
-        private readonly MainWindowViewModel? mainWindowViewModel;
         private ObservableCollection<ButtonColor>? _buttonColors;
         private bool _buttonsEnabled;
+        private readonly MainWindowViewModel? mainWindowViewModel;
+        private DispatcherTimer timer;
 
         public int Score 
         {
@@ -59,7 +59,7 @@ namespace QuizConfigurator.ViewModel
                 RaisePropertyChanged();
                 if (value == 0)
                 {
-                    AnswerSelected(null);
+                    AnswerSelected(string.Empty);
                 }
             }
         }
@@ -171,6 +171,7 @@ namespace QuizConfigurator.ViewModel
                 }
             }
         }
+        
         private void SetAnswers()
         {
             if (CurrentQuestion != null && CurrentQuestion.CorrectAnswer != null && CurrentQuestion.IncorrectAnswers != null)
@@ -187,6 +188,7 @@ namespace QuizConfigurator.ViewModel
                 }
             }
         }
+        
         public async void AnswerSelected(object? selectedAnswer)
         {
             if (selectedAnswer is string answer && CurrentQuestion != null)
@@ -207,10 +209,9 @@ namespace QuizConfigurator.ViewModel
             }
             ShowNextQuestion();
         }
-        private void Timer_Tick(object? sender, EventArgs e)
-        {
-            TimeLeft--;
-        }
+
+        private void Timer_Tick(object? sender, EventArgs e) => TimeLeft--;
+    
         private void UpdateButtonColors(string selectedAnswer, bool isCorrect)
         {
             for (int i = 0; i < ButtonColors?.Count; i++)

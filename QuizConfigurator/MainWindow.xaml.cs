@@ -15,5 +15,13 @@ namespace QuizConfigurator
             InitializeComponent();
             DataContext = new MainWindowViewModel(new CreatePackDialogService());
         }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (DataContext is MainWindowViewModel viewModel)
+            {
+                viewModel.SaveCommand.Execute(null);
+            }
+        }
     }
 }

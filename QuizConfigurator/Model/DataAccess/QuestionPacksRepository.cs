@@ -28,6 +28,12 @@ namespace QuizConfigurator.Model.DataAccess
 
         public async void Write(ObservableCollection<QuestionPackViewModel> packs)
         {
+            string? directory = Path.GetDirectoryName(FilePath);
+            if (!Directory.Exists(directory) && directory != null)
+            {
+                Directory.CreateDirectory(directory);
+            }
+
             await using FileStream createStream = File.Create(FilePath);
             await JsonSerializer.SerializeAsync(createStream, packs);
         }

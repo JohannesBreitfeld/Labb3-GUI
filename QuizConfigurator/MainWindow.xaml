@@ -11,7 +11,8 @@
         mc:Ignorable="d"
         Title="Quiz App" Height="450" Width="800" MinHeight="450" MinWidth="700"
         WindowStartupLocation="CenterScreen"
-        Icon="{fa:IconSource Icons}">
+        Icon="{fa:IconSource Icons}"
+        Closing="Window_Closing">
 
     <Window.Resources>
         <converters:BoolToWindowStyleConverter x:Key="BoolToWindowStyleConverter"/>

@@ -10,7 +10,7 @@ namespace QuizConfigurator.Model.DataAccess
     internal class QuestionPacksRepository
     {
 
-        public string FilePath = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\QuizConfigurator\\QuestionPacks.json";
+        public string FilePath = Path.Combine($"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}", "QuizConfigurator", "QuestionPacks.json");
 
         
         public async Task<ObservableCollection<QuestionPack>?> Read()

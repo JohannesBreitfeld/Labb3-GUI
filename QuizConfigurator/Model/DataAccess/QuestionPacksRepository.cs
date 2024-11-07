@@ -26,7 +26,7 @@ namespace QuizConfigurator.Model.DataAccess
             return packs;
         }
 
-        public async void Write(ObservableCollection<QuestionPackViewModel> packs)
+        public async Task Write(ObservableCollection<QuestionPackViewModel> packs)
         {
             string? directory = Path.GetDirectoryName(FilePath);
             if (!Directory.Exists(directory) && directory != null)

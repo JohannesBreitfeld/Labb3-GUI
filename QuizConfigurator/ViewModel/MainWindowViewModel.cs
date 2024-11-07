@@ -137,11 +137,11 @@ namespace QuizConfigurator.ViewModel
             ActivePack = Packs?.FirstOrDefault();
         }
  
-        private void Save(object? obj)
+        private async void Save(object? obj)
         {
             if (Packs != null)
             {
-                QuestionPacksRepository.Write(Packs);
+                await QuestionPacksRepository.Write(Packs);
             }
         }
 
